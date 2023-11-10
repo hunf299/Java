@@ -10,6 +10,7 @@ public class Customer extends Bank implements Implement,Comparable<Customer>{
     private String address;
     private boolean membership;
 
+
     public Customer(String id, String name, int age, int ID_bank, String accountNum, double accountBalance, String address, boolean membership) {
         this.id = id;
         this.name = name;
@@ -29,6 +30,7 @@ public class Customer extends Bank implements Implement,Comparable<Customer>{
                 ", account number=" + accountNum +
                 ", account balance=" + accountBalance +
                 ", address='" + address + '\'' +
+                ", membership='" + membership + '\'' +
                 '}';
     }
     public String getId() {
@@ -95,18 +97,32 @@ public class Customer extends Bank implements Implement,Comparable<Customer>{
         this.membership = membership;
     }
     @Override
-    public double addMoney(double moneyADD) {
-        this.accountBalance += moneyADD;
-        return accountBalance;
+    public double addMoney(String receiverID, String receiverAccountNum, double moneyADD) {
+        Customer receiver1;
+        try {
+            receiver1 = Bank.getCustomerbyIDandNum(receiverID, receiverAccountNum);
+        }
+        catch (NullPointerException exc1) {
+            System.out.println("Invalid id and accountnum.");
+        }
+        receiver1.accountBalance += moneyADD;
+        return receiver1.accountBalance;
     }
     @Override
-    public double withdrawMoney(double moneyWD) {
+    public double withdrawMoney(String wdID, String wdAccountNum, double moneyWD) {
+        Customer wd;
+        try {
+            wd = Bank.getCustomerbyIDandNum(wdID, wdAccountNum);
+        }
+        catch (NullPointerException exc1) {
+            System.out.println("Invalid id and accountnum.");
+        }
         if(moneyWD > 50000) {
-            if(getAccountBalance() >= moneyWD) {
+            if(wd.getAccountBalance() >= moneyWD) {
                 if(membership == true) {
-                    this.accountBalance = accountBalance - moneyWD;
+                    wd.accountBalance = wd.accountBalance - moneyWD;
                 }
-                else this.accountBalance = accountBalance - moneyWD - 2000;
+                else wd.accountBalance = wd.accountBalance - moneyWD - 2000;
             }
             else {
                 System.out.println("Not have enough balance for transaction!");
@@ -115,13 +131,15 @@ public class Customer extends Bank implements Implement,Comparable<Customer>{
         else {
             System.out.println("Withdraw money is smaller than requirement!");
         }
-        return accountBalance;
+        return wd.accountBalance;
     }
     @Override
-    public boolean transferMoney(String receiverId, String receiverAccountNumber, double amount) {
+    public boolean transferMoney(String senderId, String senderAccountNumber, String receiverId, String receiverAccountNumber, double amount) {
         Customer receiver;
+        Customer sender;
 
         try {
+            sender = Bank.getCustomerbyIDandNum(senderId, senderAccountNumber);
             receiver = Bank.getCustomerbyIDandNum(receiverId, receiverAccountNumber);
         }
         catch (NullPointerException exc) {
@@ -129,15 +147,15 @@ public class Customer extends Bank implements Implement,Comparable<Customer>{
             return false;
         }
 
-        if (amount > 10000 && this.getAccountBalance() >= amount) {
+        if (amount > 10000 && sender.getAccountBalance() >= amount) {
             if(membership == true) {
                 receiver.accountBalance = receiver.accountBalance + amount;
-                this.accountBalance = this.accountBalance - amount;
+                sender.accountBalance = sender.accountBalance - amount;
                 return true;
             }
             else {
-                this.accountBalance = this.accountBalance - amount;
-                receiver.accountBalance = receiver.accountBalance - 2000 + amount;
+                sender.accountBalance = sender.accountBalance - amount - 2000;
+                receiver.accountBalance = receiver.accountBalance + amount;
                 return true;
             }
         }

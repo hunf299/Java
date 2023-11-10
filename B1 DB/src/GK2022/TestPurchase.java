@@ -28,8 +28,7 @@ public class TestPurchase {
                     String name = sc.nextLine();
                     System.out.println("Enter customer age: ");
                     int age = sc.nextInt();
-                    System.out.println("Enter bank Id: ");
-                    int ID_bank = sc.nextInt();
+                    int ID_bank = b1.getBankId();
                     System.out.println("Enter customer account number: ");
                     sc.nextLine();
                     String accountNum = sc.nextLine();
@@ -38,8 +37,11 @@ public class TestPurchase {
                     System.out.println("Enter address: ");
                     sc.nextLine();
                     String address = sc.nextLine();
-                    System.out.println("Membership(true/false): ");
-                    boolean membership = sc.hasNext();
+                    boolean membership;
+                    if (accountBalance > 1000000) {
+                        membership = true;
+                    }
+                    else membership = false;
                     Customer c1 = new Customer(id,name,age,ID_bank,accountNum,accountBalance,address,membership);
                     b1.addCustomer(c1);
                     break;
@@ -69,29 +71,44 @@ public class TestPurchase {
                                 case "a": {
                                     System.out.println("Enter the amount of money: ");
                                     double money = sc.nextDouble();
+                                    System.out.println("Enter receiver id: ");
+                                    sc.nextLine();
+                                    String receiverID = sc.nextLine();
+                                    System.out.println("Enter receiver account num: ");
+                                    String receiverAccountNum = sc.nextLine();
                                     for (Customer customer : customers1) {
-                                        customer.addMoney(money);
+                                        customer.addMoney(receiverID, receiverAccountNum, money);
                                     }
                                     break;
                                 }
                                 case "b": {
                                     System.out.println("Enter the amount of money: ");
                                     double money = sc.nextDouble();
+                                    System.out.println("Enter sender id: ");
+                                    sc.nextLine();
+                                    String senderID = sc.nextLine();
+                                    System.out.println("Enter sender account number: ");
+                                    String senderAccountNum = sc.nextLine();
                                     System.out.println("Enter receiver id: ");
                                     sc.nextLine();
                                     String id = sc.nextLine();
                                     System.out.println("Enter receiver account number: ");
                                     String num = sc.nextLine();
                                     for (Customer customer : customers1) {
-                                        System.out.println(customer.transferMoney(id,num,money));
+                                        System.out.println(customer.transferMoney(senderID,senderAccountNum,id,num,money));
                                     }
                                     break;
                                 }
                                 case "c": {
                                     System.out.println("Enter the amount of money: ");
                                     double money = sc.nextDouble();
+                                    System.out.println("Enter wd person id: ");
+                                    sc.nextLine();
+                                    String wdID = sc.nextLine();
+                                    System.out.println("Enter wd account num: ");
+                                    String wdAccountNum = sc.nextLine();
                                     for (Customer customer : customers1) {
-                                        customer.withdrawMoney(money);
+                                        customer.withdrawMoney(wdID,wdAccountNum,money);
                                     }
                                     System.out.println();
                                     break;
