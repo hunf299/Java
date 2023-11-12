@@ -1,6 +1,6 @@
 package GK2022;
 
-public class Customer extends Bank implements Implement,Comparable<Customer>{
+public class Customer extends Bank implements Implement, Comparable<Customer>{
     private String id;
     private String name;
     private int age;
@@ -27,6 +27,7 @@ public class Customer extends Bank implements Implement,Comparable<Customer>{
         return "Customer{" +
                 "name='" + name + '\'' +
                 ", age=" + age +
+                ", Bank id=" + ID_bank +
                 ", account number=" + accountNum +
                 ", account balance=" + accountBalance +
                 ", address='" + address + '\'' +
@@ -97,32 +98,18 @@ public class Customer extends Bank implements Implement,Comparable<Customer>{
         this.membership = membership;
     }
     @Override
-    public double addMoney(String receiverID, String receiverAccountNum, double moneyADD) {
-        Customer receiver1;
-        try {
-            receiver1 = Bank.getCustomerbyIDandNum(receiverID, receiverAccountNum);
-        }
-        catch (NullPointerException exc1) {
-            System.out.println("Invalid id and accountnum.");
-        }
-        receiver1.accountBalance += moneyADD;
-        return receiver1.accountBalance;
+    public double addMoney(double moneyADD) {
+        this.accountBalance += moneyADD;
+        return this.accountBalance;
     }
     @Override
-    public double withdrawMoney(String wdID, String wdAccountNum, double moneyWD) {
-        Customer wd;
-        try {
-            wd = Bank.getCustomerbyIDandNum(wdID, wdAccountNum);
-        }
-        catch (NullPointerException exc1) {
-            System.out.println("Invalid id and accountnum.");
-        }
+    public double withdrawMoney(double moneyWD) {
         if(moneyWD > 50000) {
-            if(wd.getAccountBalance() >= moneyWD) {
+            if(this.getAccountBalance() >= moneyWD) {
                 if(membership == true) {
-                    wd.accountBalance = wd.accountBalance - moneyWD;
+                    this.accountBalance = this.accountBalance - moneyWD;
                 }
-                else wd.accountBalance = wd.accountBalance - moneyWD - 2000;
+                else this.accountBalance = this.accountBalance - moneyWD - 2000;
             }
             else {
                 System.out.println("Not have enough balance for transaction!");
@@ -131,22 +118,10 @@ public class Customer extends Bank implements Implement,Comparable<Customer>{
         else {
             System.out.println("Withdraw money is smaller than requirement!");
         }
-        return wd.accountBalance;
+        return this.accountBalance;
     }
     @Override
-    public boolean transferMoney(String senderId, String senderAccountNumber, String receiverId, String receiverAccountNumber, double amount) {
-        Customer receiver;
-        Customer sender;
-
-        try {
-            sender = Bank.getCustomerbyIDandNum(senderId, senderAccountNumber);
-            receiver = Bank.getCustomerbyIDandNum(receiverId, receiverAccountNumber);
-        }
-        catch (NullPointerException exc) {
-            System.out.println("Invalid id and accountnum.");
-            return false;
-        }
-
+    public boolean transferMoney(Customer sender, Customer receiver, double amount) {
         if (amount > 10000 && sender.getAccountBalance() >= amount) {
             if(membership == true) {
                 receiver.accountBalance = receiver.accountBalance + amount;
@@ -170,8 +145,8 @@ public class Customer extends Bank implements Implement,Comparable<Customer>{
         return getCustomerbyIDandNum(id,accountNum).accountBalance;
     }
     public int compareTo(Customer customer) {
-        if (this.accountBalance < customer.accountBalance) return -1;
-        if (this.accountBalance > customer.accountBalance) return 1;
+        if (this.accountBalance < customer.accountBalance) return 1;
+        if (this.accountBalance > customer.accountBalance) return -1;
         return 0;
     }
 }

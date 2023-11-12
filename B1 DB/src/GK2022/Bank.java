@@ -50,7 +50,11 @@ public class Bank {
         return null;
     }
     public double sumMoneyBank() {
-        return this.customers.stream().mapToDouble(Customer::getAccountBalance).sum();
+        double sum = 0;
+        for (Customer customer : customers) {
+            sum = sum + customer.getAccountBalance();
+        }
+        return sum;
     }
 
     @Override

@@ -51,6 +51,7 @@ public class TestPurchase {
                     System.out.println("Enter b to calculate the total of money in the bank");
                     System.out.println("Enter c to make transaction");
                     System.out.println("Enter d to sort list of customers based on customer's balance");
+                    System.out.println("Enter e to check a specific customer's balance");
                     String line = sc.nextLine();
                     switch (line) {
                         case "a": {
@@ -76,9 +77,8 @@ public class TestPurchase {
                                     String receiverID = sc.nextLine();
                                     System.out.println("Enter receiver account num: ");
                                     String receiverAccountNum = sc.nextLine();
-                                    for (Customer customer : customers1) {
-                                        customer.addMoney(receiverID, receiverAccountNum, money);
-                                    }
+                                    Customer receiverCustomer = Bank.getCustomerbyIDandNum(receiverID, receiverAccountNum);
+                                    receiverCustomer.addMoney(money);
                                     break;
                                 }
                                 case "b": {
@@ -90,12 +90,16 @@ public class TestPurchase {
                                     System.out.println("Enter sender account number: ");
                                     String senderAccountNum = sc.nextLine();
                                     System.out.println("Enter receiver id: ");
-                                    sc.nextLine();
                                     String id = sc.nextLine();
                                     System.out.println("Enter receiver account number: ");
                                     String num = sc.nextLine();
-                                    for (Customer customer : customers1) {
-                                        System.out.println(customer.transferMoney(senderID,senderAccountNum,id,num,money));
+                                    Customer sender = Bank.getCustomerbyIDandNum(senderID, senderAccountNum);
+                                    Customer receiver = Bank.getCustomerbyIDandNum(id, num);
+                                    if (sender == null || receiver == null) {
+                                        System.out.println("Invalid id and accountnum.");
+                                    }
+                                    else {
+                                    System.out.println(sender.transferMoney(sender, receiver, money));
                                     }
                                     break;
                                 }
@@ -107,10 +111,19 @@ public class TestPurchase {
                                     String wdID = sc.nextLine();
                                     System.out.println("Enter wd account num: ");
                                     String wdAccountNum = sc.nextLine();
+                                    Customer receiver = Bank.getCustomerbyIDandNum(wdID,wdAccountNum);
+                                    receiver.withdrawMoney(money);
+                                    break;
+                                }
+                                case "e": {
+                                    System.out.println("Enter customer id: ");
+                                    sc.nextLine();
+                                    String cusID = sc.nextLine();
+                                    System.out.println("Enter account num: ");
+                                    String cusAccountNum = sc.nextLine();
                                     for (Customer customer : customers1) {
-                                        customer.withdrawMoney(wdID,wdAccountNum,money);
+                                        System.out.println("Balance: " + customer.checkAccount(cusID,cusAccountNum));
                                     }
-                                    System.out.println();
                                     break;
                                 }
                                 default: {
