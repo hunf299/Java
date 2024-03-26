@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="login_mainpanel" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, reflect, #0b85ff 0.0%, #0080ff 53.0201%, #dddddd 100.0%);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javalasttermproject.javalasttermproject.Controller.Login">
+   <children>
+      <BorderPane fx:id="login_borderpane" layoutX="10.0" layoutY="24.0" prefHeight="21.0" prefWidth="600.0">
+         <left>
+            <ImageView fx:id="imageview" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@Image/Image1.png" />
+               </image></ImageView>
+         </left>
+         <right>
+            <AnchorPane fx:id="hotline_panel" prefHeight="46.0" prefWidth="215.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fx:id="phone_imageview" fitHeight="37.0" fitWidth="37.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Image/Image2.png" />
+                     </image></ImageView>
+                  <Label fx:id="hotline_label" layoutX="61.0" layoutY="6.0" text="Hotline" textFill="WHITE" />
+                  <Label fx:id="hotline" layoutX="61.0" layoutY="25.0" text="1800 8000 Nhánh số 2" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold Italic" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </right>
+      </BorderPane>
+      <AnchorPane fx:id="login_subpanel" layoutX="34.0" layoutY="98.0" prefHeight="274.0" prefWidth="545.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <Button fx:id="login_button" layoutX="28.0" layoutY="187.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="216.0" style="-fx-background-color: #1bc627;" text="Đăng nhập" textFill="WHITE" />
+            <Label fx:id="login_label" layoutX="28.0" layoutY="29.0" prefHeight="27.0" prefWidth="216.0" text="Đăng Nhập">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <TextField fx:id="username_textfield" layoutX="28.0" layoutY="86.0" prefHeight="27.0" prefWidth="216.0" promptText="Mã CMND" />
+            <PasswordField fx:id="passwordfield" layoutX="28.0" layoutY="131.0" prefHeight="27.0" prefWidth="216.0" promptText="Mã đăng nhập" />
+            <Line fx:id="line" endX="-100.0" endY="203.0" fill="BLACK" layoutX="369.0" layoutY="34.0" startX="-100.0" stroke="#cdcdcd" />
+            <Label fx:id="introduction_label" layoutX="289.0" layoutY="29.0" prefHeight="27.0" prefWidth="235.0" text="Giới thiệu" textAlignment="CENTER" textFill="#8d8d8d">
+               <font>
+                  <Font name="System Bold Italic" size="21.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="introduction_textarea" layoutX="289.0" layoutY="68.0" prefHeight="166.0" prefWidth="235.0" style="-fx-background-color: transparent;" text="- Hệ thống của Bộ Giáo dục và Đào tạo giúp quản lý kỳ thi THPT Quốc gia cho các thí sinh&#10;- Thí sinh đăng nhập bằng tài khoản được cung cấp sau đó có thể đổi lại mật khẩu mới &#10;- Thí sinh liên hệ hotline 1800 8000 để được giải đáp mọi thắc mắc về hệ thống và cách sử dụng hệ thống quản lý kỳ thi" wrapText="true" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
