@@ -8,54 +8,157 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="login_mainpanel" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, reflect, #0b85ff 0.0%, #0080ff 53.0201%, #dddddd 100.0%);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javalasttermproject.javalasttermproject.Controller.Login">
+<AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javalasttermproject.javalasttermproject.Controller.Login">
    <children>
-      <BorderPane fx:id="login_borderpane" layoutX="10.0" layoutY="24.0" prefHeight="21.0" prefWidth="600.0">
-         <left>
-            <ImageView fx:id="imageview" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-               <image>
-                  <Image url="@Image/Image1.png" />
-               </image></ImageView>
-         </left>
-         <right>
-            <AnchorPane fx:id="hotline_panel" prefHeight="46.0" prefWidth="215.0" BorderPane.alignment="CENTER">
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" stylesheets="@login.css">
+         <children>
+            <AnchorPane fx:id="form_panel" prefHeight="700.0" prefWidth="900.0">
                <children>
-                  <ImageView fx:id="phone_imageview" fitHeight="37.0" fitWidth="37.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Image/Image2.png" />
-                     </image></ImageView>
-                  <Label fx:id="hotline_label" layoutX="61.0" layoutY="6.0" text="Hotline" textFill="WHITE" />
-                  <Label fx:id="hotline" layoutX="61.0" layoutY="25.0" text="1800 8000 Nhánh số 2" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold Italic" size="13.0" />
-                     </font>
-                  </Label>
+                  <StackPane fx:id="forgetpass_stackpanel" prefHeight="700.0" prefWidth="450.0">
+                     <children>
+                        <AnchorPane id="right_pane" fx:id="authentication_panel" prefHeight="700.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label id="head_label" layoutX="71.0" layoutY="88.0" text="Xác thực mã bảo mật" textFill="#047cff">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Label>
+                              <TextArea id="authentication_text" editable="false" layoutX="70.0" layoutY="138.0" prefHeight="68.0" prefWidth="314.0" text="Chúng tôi vừa gửi mã đến email của bạn. Nhập mã này vào bên dưới để xác minh địa chỉ email khôi phục của bạn." wrapText="true">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </TextArea>
+                              <Button id="login_button" fx:id="submit_button" layoutX="70.0" layoutY="385.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="313.0" text="Xác nhận" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                              <TextField fx:id="securitycode_textfield" layoutX="70.0" layoutY="278.0" prefHeight="53.0" prefWidth="313.0" promptText="Mã bảo mật">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane id="right_pane" fx:id="changepass_panel" layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label id="head_label" layoutX="71.0" layoutY="88.0" text="Mã đăng nhập mới" textFill="#047cff">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Label>
+                              <PasswordField fx:id="againpass_field" layoutX="70.0" layoutY="335.0" prefHeight="53.0" prefWidth="313.0" promptText="Nhập lại mã đăng nhập mới">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </PasswordField>
+                              <PasswordField fx:id="newpass_field" layoutX="70.0" layoutY="253.0" prefHeight="53.0" prefWidth="313.0" promptText="Mã đăng nhập mới">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </PasswordField>
+                              <Button id="login_button" fx:id="save_button" layoutX="70.0" layoutY="441.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="313.0" text="Đổi mã đăng nhập" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane id="right_pane" fx:id="fillingid_panel" layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="450.0">
+                           <children>
+                              <Label id="head_label" layoutX="71.0" layoutY="88.0" text="Nhập số CCCD/CMND" textFill="#047cff">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Label>
+                              <Button id="login_button" fx:id="id_submit_button" layoutX="70.0" layoutY="385.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="313.0" text="Xác nhận" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                              <TextField fx:id="idcheck_textfield" layoutX="70.0" layoutY="278.0" prefHeight="53.0" prefWidth="313.0" promptText="Số CCCD/CMND">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </StackPane>
+                  <AnchorPane id="right_pane" fx:id="login_panel" layoutX="450.0" prefHeight="700.0" prefWidth="450.0">
+                     <children>
+                        <Label id="head_label" layoutX="71.0" layoutY="88.0" text="Đăng nhập" textFill="#047cff">
+                           <font>
+                              <Font name="System Bold Italic" size="30.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="username_textfield" layoutX="68.0" layoutY="256.0" prefHeight="53.0" prefWidth="313.0" promptText="Số CCCD/CMND">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <Button id="login_button" fx:id="login_button" layoutX="69.0" layoutY="442.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="313.0" text="Đăng nhập" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Button>
+                        <PasswordField fx:id="passwordfield" layoutX="68.0" layoutY="334.0" prefHeight="53.0" prefWidth="313.0" promptText="Mã đăng nhập">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </PasswordField>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane id="left_pane" fx:id="transition_panel" maxHeight="1400.0" maxWidth="900.0" minHeight="700.0" minWidth="450.0" prefHeight="700.0" prefWidth="450.0">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="353.0" layoutX="53.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Image/Image1.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="53.0" fitWidth="56.0" layoutX="73.0" layoutY="604.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Image/Image2.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="150.0" layoutY="604.0" prefHeight="27.0" prefWidth="221.0" text="Hotline" textFill="WHITE">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="150.0" layoutY="631.0" prefHeight="27.0" prefWidth="221.0" text="1800 8000 NHÁNH SỐ 2" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="transition_forgetpass_label" layoutX="81.0" layoutY="294.0" text="Quên mã đăng nhập?" textFill="WHITE">
+                           <font>
+                              <Font size="33.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="transition_alreadyacc_label" layoutX="114.0" layoutY="294.0" text="Đã có tài khoản?" textFill="WHITE" visible="false">
+                           <font>
+                              <Font size="33.0" />
+                           </font>
+                        </Label>
+                        <Button id="forgetpassword_button" fx:id="transition_forgetpass_button" layoutX="102.0" layoutY="354.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="254.0" text="Đổi mã đăng nhập">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Button>
+                        <Button id="forgetpassword_button" fx:id="transition_alreadyacc_button" layoutX="102.0" layoutY="354.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="254.0" text="Đăng nhập ngay!" visible="false">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
-         </right>
-      </BorderPane>
-      <AnchorPane fx:id="login_subpanel" layoutX="34.0" layoutY="98.0" prefHeight="274.0" prefWidth="545.0" style="-fx-background-color: #ffffff;">
-         <children>
-            <Button fx:id="login_button" layoutX="28.0" layoutY="187.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="216.0" style="-fx-background-color: #1bc627;" text="Đăng nhập" textFill="WHITE" />
-            <Label fx:id="login_label" layoutX="28.0" layoutY="29.0" prefHeight="27.0" prefWidth="216.0" text="Đăng Nhập">
-               <font>
-                  <Font name="System Bold" size="21.0" />
-               </font>
-            </Label>
-            <TextField fx:id="username_textfield" layoutX="28.0" layoutY="86.0" prefHeight="27.0" prefWidth="216.0" promptText="Mã CMND" />
-            <PasswordField fx:id="passwordfield" layoutX="28.0" layoutY="131.0" prefHeight="27.0" prefWidth="216.0" promptText="Mã đăng nhập" />
-            <Line fx:id="line" endX="-100.0" endY="203.0" fill="BLACK" layoutX="369.0" layoutY="34.0" startX="-100.0" stroke="#cdcdcd" />
-            <Label fx:id="introduction_label" layoutX="289.0" layoutY="29.0" prefHeight="27.0" prefWidth="235.0" text="Giới thiệu" textAlignment="CENTER" textFill="#8d8d8d">
-               <font>
-                  <Font name="System Bold Italic" size="21.0" />
-               </font>
-            </Label>
-            <TextArea fx:id="introduction_textarea" layoutX="289.0" layoutY="68.0" prefHeight="166.0" prefWidth="235.0" style="-fx-background-color: transparent;" text="- Hệ thống của Bộ Giáo dục và Đào tạo giúp quản lý kỳ thi THPT Quốc gia cho các thí sinh&#10;- Thí sinh đăng nhập bằng tài khoản được cung cấp sau đó có thể đổi lại mật khẩu mới &#10;- Thí sinh liên hệ hotline 1800 8000 để được giải đáp mọi thắc mắc về hệ thống và cách sử dụng hệ thống quản lý kỳ thi" wrapText="true" />
          </children>
-      </AnchorPane>
+      </StackPane>
    </children>
 </AnchorPane>

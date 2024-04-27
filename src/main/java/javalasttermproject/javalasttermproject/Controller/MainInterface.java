@@ -1589,7 +1589,7 @@ public class MainInterface implements Initializable {
                 fxmlLoader = new FXMLLoader(ChangePassword.class.getResource("login-view.fxml"));
                 Scene scene = null;
                 try {
-                    scene = new Scene(fxmlLoader.load(),600,400);
+                    scene = new Scene(fxmlLoader.load(),900,700);
                 }
                 catch (IOException e) {
                     e.printStackTrace();

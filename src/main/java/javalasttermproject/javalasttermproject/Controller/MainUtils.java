@@ -2,14 +2,15 @@ package javalasttermproject.javalasttermproject.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javalasttermproject.javalasttermproject.Controller.ChangePassword;
-import javalasttermproject.javalasttermproject.Controller.LoginUtils;
 import javalasttermproject.javalasttermproject.Model.Database;
 
 import java.io.IOException;
@@ -191,6 +192,59 @@ public class MainUtils {
             double subject3 = Double.valueOf(sub3.getText());
             double result = subject1 + subject2 + subject3;
             combi.setText(String.valueOf(result));
+        }
+    }
+    public static void changePass_Main(ActionEvent event, String oldPass, String newPass, String newPass2) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = Database.connectDB();
+            preparedStatement = connection.prepareStatement("SELECT * from users WHERE username = ?");
+            preparedStatement.setString(1, LoginUtils.tempUserName);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String receivedPass = resultSet.getString("password");
+                if (receivedPass.equals(oldPass)) {
+                    if (!newPass.isBlank()) {
+                        if (newPass.equals(newPass2)) {
+                            String sql = "UPDATE users SET password = ? WHERE username = ?";
+                            PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
+                            preparedStatement1.setString(1, newPass);
+                            preparedStatement1.setString(2, LoginUtils.tempUserName);
+                            preparedStatement1.executeUpdate();
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Đổi mã đăng nhập thành công!\n" + "Bạn có muốn tắt hộp thoại?", ButtonType.YES, ButtonType.NO);
+                            alert.setTitle("Hộp thoại thông báo");
+                            alert.setHeaderText("Xác nhận");
+                            alert.showAndWait();
+                            if (alert.getResult() == ButtonType.YES) {
+                                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                stage.close();
+                            }
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Hộp thoại báo lỗi");
+                            alert.setHeaderText("Lỗi");
+                            alert.setContentText("Nhập sai mật khẩu mới!");
+                            alert.show();
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Hộp thoại báo lỗi");
+                        alert.setHeaderText("Lỗi");
+                        alert.setContentText("Nhập sai mật khẩu mới!");
+                        alert.show();
+                    }
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Hộp thoại báo lỗi");
+                    alert.setHeaderText("Lỗi");
+                    alert.setContentText("Nhập sai mật khẩu cũ!");
+                    alert.show();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

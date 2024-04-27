@@ -1,13 +1,19 @@
 package javalasttermproject.javalasttermproject.Controller;
 
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javalasttermproject.javalasttermproject.Controller.ChangePassword;
 import javalasttermproject.javalasttermproject.Controller.Login;
 import javalasttermproject.javalasttermproject.Model.Database;
@@ -18,21 +24,23 @@ import java.sql.*;
 
 public class LoginUtils {
     public static String tempUserName;
+
     public static void changeScene(ActionEvent event, String title, String url, int width, int height) {
         FXMLLoader fxmlLoader = new FXMLLoader(ChangePassword.class.getResource(url));
         Scene scene = null;
         try {
-            scene = new Scene(fxmlLoader.load(),width,height);
-        }
-        catch (IOException e) {
+            scene = new Scene(fxmlLoader.load(), width, height);
+        } catch (IOException e) {
             e.printStackTrace();
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle(title);
         stage.setResizable(false);
+        scene.getStylesheets().add(LoginUtils.class.getResource("/javalasttermproject/javalasttermproject/Controller/maininterface.css").toExternalForm());
         stage.show();
     }
+
     public static void logInUser(ActionEvent event, String username, String password) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -55,7 +63,7 @@ public class LoginUtils {
                     String receivedUsername = resultSet.getString("username");
                     tempUserName = receivedUsername;
                     if (receivedPassword.equals(password) && receivedUsername.equals(username)) {
-                        changeScene(event, "Giao diện chính - Hệ thống quản lí thi tốt nghiệp THPTQG","maininterface-view.fxml",900,700);
+                        changeScene(event, "Giao diện chính - Hệ thống quản lí thi tốt nghiệp THPTQG", "maininterface-view.fxml", 900, 700);
                     } else {
                         System.out.println("Sai CCCD/CMND hoặc mã đăng nhập!");
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -70,61 +78,93 @@ public class LoginUtils {
             e.printStackTrace();
         }
     }
-    public static void changePass(ActionEvent event, String oldPass, String newPass, String newPass2) {
+
+    public static void changePass_Login(ActionEvent event, String id, String newPass, String newPass2, Button button1, Button button2, AnchorPane panel1, AnchorPane panel2, StackPane panel3, Label label1, Label label2) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             connection = Database.connectDB();
-            preparedStatement = connection.prepareStatement("SELECT * from users WHERE username = ?");
-            preparedStatement.setString(1, tempUserName);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String receivedPass = resultSet.getString("password");
-                if (receivedPass.equals(oldPass)) {
-                    if (!newPass.isBlank()) {
-                        if (newPass.equals(newPass2)) {
-                            String sql = "UPDATE users SET password = ? WHERE username = ?";
-                            PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
-                            preparedStatement1.setString(1,newPass);
-                            preparedStatement1.setString(2,tempUserName);
-                            preparedStatement1.executeUpdate();
-                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Đổi mã đăng nhập thành công!\n"+"Bạn có muốn tắt hộp thoại?", ButtonType.YES, ButtonType.NO);
-                            alert.setTitle("Hộp thoại thông báo");
-                            alert.setHeaderText("Xác nhận");
-                            alert.showAndWait();
-                            if (alert.getResult() == ButtonType.YES) {
-                                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                                stage.close();
-                            }
-                        }
-                        else {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Hộp thoại báo lỗi");
-                            alert.setHeaderText("Lỗi");
-                            alert.setContentText("Nhập sai mật khẩu mới!");
-                            alert.show();
-                        }
+            if (!newPass.isBlank()) {
+                if (newPass.equals(newPass2)) {
+                    String sql = "UPDATE users SET password = ? WHERE username = ?";
+                    PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
+                    preparedStatement1.setString(1, newPass);
+                    preparedStatement1.setString(2, id);
+                    preparedStatement1.executeUpdate();
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Đổi mã đăng nhập thành công!\n" + "Bạn có muốn đăng nhập ngay bây giờ?", ButtonType.YES, ButtonType.NO);
+                    alert.setTitle("Hộp thoại thông báo");
+                    alert.setHeaderText("Xác nhận");
+                    alert.showAndWait();
+                    if (alert.getResult() == ButtonType.YES) {
+                        TranslateTransition slider = new TranslateTransition();
+                        slider.setNode(panel1);
+                        slider.setToX(0);
+                        slider.setDuration(Duration.seconds(.5));
+
+                        slider.setOnFinished((ActionEvent e) -> {
+                            panel3.setVisible(false);
+                            panel2.setVisible(true);
+                            button1.setVisible(true);
+                            button2.setVisible(false);
+                            label1.setVisible(false);
+                            label2.setVisible(true);
+                        });
+
+                        slider.play();
                     }
-                    else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Hộp thoại báo lỗi");
-                        alert.setHeaderText("Lỗi");
-                        alert.setContentText("Nhập sai mật khẩu mới!");
-                        alert.show();
-                    }
-                }
-                else {
+                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Hộp thoại báo lỗi");
                     alert.setHeaderText("Lỗi");
-                    alert.setContentText("Nhập sai mật khẩu cũ!");
+                    alert.setContentText("Nhập sai mật khẩu mới!");
                     alert.show();
                 }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hộp thoại báo lỗi");
+                alert.setHeaderText("Lỗi");
+                alert.setContentText("Nhập sai mật khẩu mới!");
+                alert.show();
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void switchForm(ActionEvent event, Button button1, Button button2, AnchorPane panel1, AnchorPane panel2, StackPane panel3, Label label1, Label label2) {
+        TranslateTransition slider = new TranslateTransition();
+
+        if (event.getSource() == button1) {
+            slider.setNode(panel1);
+            slider.setToX(450);
+            slider.setDuration(Duration.seconds(.5));
+
+            slider.setOnFinished((ActionEvent e) -> {
+                panel3.setVisible(true);
+                panel2.setVisible(false);
+                button1.setVisible(false);
+                button2.setVisible(true);
+                label1.setVisible(true);
+                label2.setVisible(false);
+            });
+
+            slider.play();
+        } else if (event.getSource() == button2) {
+            slider.setNode(panel1);
+            slider.setToX(0);
+            slider.setDuration(Duration.seconds(.5));
+
+            slider.setOnFinished((ActionEvent e) -> {
+                panel3.setVisible(false);
+                panel2.setVisible(true);
+                button1.setVisible(true);
+                button2.setVisible(false);
+                label1.setVisible(false);
+                label2.setVisible(true);
+            });
+
+            slider.play();
         }
     }
 }

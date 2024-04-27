@@ -62,7 +62,7 @@ public class ChangePassword implements Initializable {
         save_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                LoginUtils.changePass(event,oldpass_field.getText(),newpass_field.getText(),againpass_field.getText());
+                MainUtils.changePass_Main(event,oldpass_field.getText(),newpass_field.getText(),againpass_field.getText());
             }
         });
         cancel_button.setOnAction(new EventHandler<ActionEvent>() {

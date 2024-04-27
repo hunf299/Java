@@ -24,9 +24,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javalasttermproject.javalasttermproject.Controller.MainInterface">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" stylesheets="@maininterface.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javalasttermproject.javalasttermproject.Controller.MainInterface">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane id="root" prefHeight="200.0" prefWidth="200.0">
          <children>
             <AnchorPane fx:id="verticalmenu" layoutX="21.0" layoutY="31.0" prefHeight="643.0" prefWidth="182.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%); -fx-background-radius: 20;">
                <children>
@@ -96,10 +96,10 @@
                      <children>
                         <Label fx:id="request_dashboard_label" layoutX="19.0" layoutY="9.0" text="Nguyện vọng">
                            <font>
-                              <Font name="System Bold Italic" size="15.0" />
+                              <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <Button fx:id="request_dashboard_viewbutton" layoutX="170.0" layoutY="5.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="90.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%); -fx-background-radius: 15;" text="Xem chi tiết" textFill="WHITE" />
+                        <Button id="dashboard_buttons" fx:id="request_dashboard_viewbutton" layoutX="170.0" layoutY="5.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="90.0" text="Xem chi tiết" textFill="WHITE" />
                         <Label fx:id="id_testinfo_label11" alignment="CENTER" layoutX="12.0" layoutY="40.0" prefHeight="17.0" prefWidth="20.0" text="1">
                            <font>
                               <Font name="System Bold" size="13.0" />
@@ -157,7 +157,7 @@
                   </AnchorPane>
                   <AnchorPane fx:id="form_dashboard" layoutX="7.0" layoutY="63.0" prefHeight="137.0" prefWidth="657.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 8, 0, 0, 0); -fx-background-radius: 15; -fx-background-color: #fffefe;">
                      <children>
-                        <Button fx:id="form_dashboard_editbutton" layoutX="503.0" layoutY="8.0" mnemonicParsing="false" prefHeight="9.0" prefWidth="140.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%); -fx-background-radius: 15;" text="Sửa thông tin phiếu" textFill="WHITE" />
+                        <Button id="dashboard_buttons" fx:id="form_dashboard_editbutton" layoutX="503.0" layoutY="8.0" mnemonicParsing="false" prefHeight="9.0" prefWidth="140.0" text="Sửa thông tin phiếu" textFill="WHITE" />
                         <Label fx:id="thptqg_label_form1" layoutX="14.0" layoutY="44.0" text="- Có sử dụng kết quả thi THPTQG để xét tuyển ĐH, CĐ:" />
                         <RadioButton fx:id="thptqg_radiobutton_dashboard" layoutX="329.0" layoutY="44.0" mnemonicParsing="false" />
                         <Label fx:id="outsidecandidate_label_form1" layoutX="14.0" layoutY="72.0" text="- Thí sinh tự do:" />
@@ -166,7 +166,7 @@
                         <TextField fx:id="method_textfield_dashboard" editable="false" layoutX="575.0" layoutY="39.0" prefHeight="26.0" prefWidth="65.0" style="-fx-background-color: transparent;" />
                         <TextField fx:id="free_textfield_dashboard" editable="false" layoutX="135.0" layoutY="67.0" style="-fx-background-color: transparent;" />
                         <TextField fx:id="subject_field_dashboard" editable="false" layoutX="166.0" layoutY="96.0" style="-fx-background-color: transparent;" />
-                        <Label layoutX="15.0" layoutY="12.0" text="Phiếu đăng ký dự thi">
+                        <Label id="label" layoutX="15.0" layoutY="12.0" text="Phiếu đăng ký dự thi">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -180,7 +180,7 @@
                               <Font name="System Bold Italic" size="15.0" />
                            </font>
                         </Label>
-                        <Button fx:id="score_dashboard_viewbutton" layoutX="255.0" layoutY="6.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="90.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%); -fx-background-radius: 15;" text="Xem chi tiết" textFill="WHITE" />
+                        <Button id="dashboard_buttons" fx:id="score_dashboard_viewbutton" layoutX="255.0" layoutY="6.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="90.0" text="Xem chi tiết" textFill="WHITE" />
                         <BarChart fx:id="score_barchart" layoutX="3.0" layoutY="33.0" prefHeight="245.0" prefWidth="355.0">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" fx:id="x_axis" />
@@ -198,7 +198,7 @@
                               <Font name="System Bold Italic" size="15.0" />
                            </font>
                         </Label>
-                        <Button fx:id="testinfo_dashboard_viewbutton" layoutX="553.0" layoutY="6.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="90.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%); -fx-background-radius: 15;" text="Xem chi tiết" textFill="WHITE" />
+                        <Button id="dashboard_buttons" fx:id="testinfo_dashboard_viewbutton" layoutX="553.0" layoutY="6.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="90.0" text="Xem chi tiết" textFill="WHITE" />
                         <Label fx:id="testvenue_label1" layoutX="14.0" layoutY="66.0" text="- Địa điểm dự thi:" />
                         <Label fx:id="testvenue_dashboard" layoutX="121.0" layoutY="66.0" prefHeight="17.0" prefWidth="303.0">
                            <font>
@@ -244,17 +244,17 @@
                      <children>
                         <ButtonBar fx:id="form_buttonbar" layoutX="289.0" layoutY="3.0" prefHeight="53.0" prefWidth="362.0">
                            <buttons>
-                              <Button fx:id="change_button" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%);" text="Sửa phiếu" textFill="WHITE">
+                              <Button id="form_buttons" fx:id="change_button" mnemonicParsing="false" prefHeight="40.0" text="Sửa phiếu" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold Italic" size="13.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="delete_button" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%);" text="Xoá phiếu" textFill="WHITE">
+                              <Button id="form_buttons" fx:id="delete_button" mnemonicParsing="false" prefHeight="40.0" text="Xoá phiếu" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold Italic" size="13.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="viewform_button" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%);" text="Xem phiếu" textFill="WHITE">
+                              <Button id="form_buttons" fx:id="viewform_button" mnemonicParsing="false" prefHeight="40.0" text="Xem phiếu" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold Italic" size="13.0" />
                                  </font>
@@ -782,17 +782,17 @@
                   </Label>
                   <ButtonBar fx:id="request_buttonbar" layoutX="27.0" layoutY="41.0" prefHeight="53.0" prefWidth="582.0">
                      <buttons>
-                        <Button fx:id="addrequest_button" minWidth="49.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="169.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%);" text="Lưu nguyện vọng" textFill="WHITE">
+                        <Button id="request_buttons" fx:id="addrequest_button" minWidth="49.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="169.0" text="Lưu nguyện vọng" textFill="WHITE">
                            <font>
                               <Font name="System Bold Italic" size="13.0" />
                            </font>
                         </Button>
-                        <Button fx:id="changeorder_button" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%);" text="Sửa nguyện vọng" textFill="WHITE">
+                        <Button id="request_buttons" fx:id="changeorder_button" mnemonicParsing="false" prefHeight="40.0" text="Sửa nguyện vọng" textFill="WHITE">
                            <font>
                               <Font name="System Bold Italic" size="13.0" />
                            </font>
                         </Button>
-                        <Button fx:id="deleterequest_button" mnemonicParsing="false" prefHeight="40.0" prefWidth="203.0" style="-fx-background-color: linear-gradient(from 18.0523% 64.3705% to 100.0% 100.0%, #369cd7 0.0%, #cad7dd 100.0%);" text="Xoá nguyện vọng" textFill="WHITE">
+                        <Button id="request_buttons" fx:id="deleterequest_button" mnemonicParsing="false" prefHeight="40.0" prefWidth="203.0" text="Xoá nguyện vọng" textFill="WHITE">
                            <font>
                               <Font name="System Bold Italic" size="13.0" />
                            </font>
