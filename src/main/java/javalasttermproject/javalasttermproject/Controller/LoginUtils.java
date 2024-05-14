@@ -16,10 +16,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javalasttermproject.javalasttermproject.Controller.ChangePassword;
 import javalasttermproject.javalasttermproject.Controller.Login;
+import javalasttermproject.javalasttermproject.Model.ConnectGmail;
 import javalasttermproject.javalasttermproject.Model.Database;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.Random;
 
 
 public class LoginUtils {
@@ -79,60 +81,85 @@ public class LoginUtils {
         }
     }
 
-    public static void changePass_Login(ActionEvent event, String id, String newPass, String newPass2, Button button1, Button button2, AnchorPane panel1, AnchorPane panel2, StackPane panel3, Label label1, Label label2) {
+
+    public static void changePass_Login(ActionEvent event, String id,String oldPass, String newPass, String newPass2, Button button1, Button button2, AnchorPane panel1, AnchorPane panel2, StackPane panel3, Label label1, Label label2) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        String ktr = null;
         try {
             connection = Database.connectDB();
-            if (!newPass.isBlank()) {
-                if (newPass.equals(newPass2)) {
-                    String sql = "UPDATE users SET password = ? WHERE username = ?";
-                    PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
-                    preparedStatement1.setString(1, newPass);
-                    preparedStatement1.setString(2, id);
-                    preparedStatement1.executeUpdate();
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Đổi mã đăng nhập thành công!\n" + "Bạn có muốn đăng nhập ngay bây giờ?", ButtonType.YES, ButtonType.NO);
-                    alert.setTitle("Hộp thoại thông báo");
-                    alert.setHeaderText("Xác nhận");
-                    alert.showAndWait();
-                    if (alert.getResult() == ButtonType.YES) {
-                        TranslateTransition slider = new TranslateTransition();
-                        slider.setNode(panel1);
-                        slider.setToX(0);
-                        slider.setDuration(Duration.seconds(.5));
 
-                        slider.setOnFinished((ActionEvent e) -> {
-                            panel3.setVisible(false);
-                            panel2.setVisible(true);
-                            button1.setVisible(true);
-                            button2.setVisible(false);
-                            label1.setVisible(false);
-                            label2.setVisible(true);
-                        });
+            if(!oldPass.isBlank() || !newPass.isBlank()){
+                String sqlCheck= "SELECT password FROM users WHERE username = ?";
+                PreparedStatement prepCheck=connection.prepareStatement(sqlCheck);
+                prepCheck.setString(1,id);
+                ResultSet resultCheck=prepCheck.executeQuery();
+                while (resultCheck.next()){
+                    ktr=resultCheck.getString("password");
+                }
+                if(oldPass.equals(ktr)){
+                    if (newPass.equals(newPass2)) {
+                        String sql = "UPDATE users SET password = ? WHERE username = ?";
+                        PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
+                        preparedStatement1.setString(1, newPass);
+                        preparedStatement1.setString(2, id);
+                        preparedStatement1.executeUpdate();
 
-                        slider.play();
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Đổi mã đăng nhập thành công!\n" + "Bạn có muốn đăng nhập ngay bây giờ?", ButtonType.YES, ButtonType.NO);
+                        alert.setTitle("Hộp thoại thông báo");
+                        alert.setHeaderText("Xác nhận");
+                        alert.showAndWait();
+                        if (alert.getResult() == ButtonType.YES) {
+                            TranslateTransition slider = new TranslateTransition();
+                            slider.setNode(panel1);
+                            slider.setToX(0);
+                            slider.setDuration(Duration.seconds(.5));
+
+                            slider.setOnFinished((ActionEvent e) -> {
+                                panel3.setVisible(true);
+                                panel2.setVisible(true);
+                                button1.setVisible(true);
+                                button2.setVisible(false);
+                                label1.setVisible(false);
+                                label2.setVisible(true);
+
+                            });
+
+                            slider.play();
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Hộp thoại báo lỗi");
+                        alert.setHeaderText("Lỗi");
+                        alert.setContentText("Nhập sai mật khẩu mới!");
+                        alert.show();
                     }
-                } else {
+                }
+                else{
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Hộp thoại báo lỗi");
                     alert.setHeaderText("Lỗi");
-                    alert.setContentText("Nhập sai mật khẩu mới!");
+                    alert.setContentText("Mật khẩu cũ không đúng!");
                     alert.show();
                 }
-            } else {
+            } else{
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Hộp thoại báo lỗi");
                 alert.setHeaderText("Lỗi");
-                alert.setContentText("Nhập sai mật khẩu mới!");
+                alert.setContentText("Bạn cần nhập đầy đủ thông tin!");
                 alert.show();
             }
+
+
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void switchForm(ActionEvent event, Button button1, Button button2, AnchorPane panel1, AnchorPane panel2, StackPane panel3, Label label1, Label label2) {
+    public static void switchForm(ActionEvent event, Button button1, Button button2, AnchorPane panel1, AnchorPane panel2, StackPane panel3, Label label1, Label label2,AnchorPane forgotPass) {
         TranslateTransition slider = new TranslateTransition();
 
         if (event.getSource() == button1) {
@@ -142,7 +169,7 @@ public class LoginUtils {
 
             slider.setOnFinished((ActionEvent e) -> {
                 panel3.setVisible(true);
-                panel2.setVisible(false);
+                panel2.setVisible(true);
                 button1.setVisible(false);
                 button2.setVisible(true);
                 label1.setVisible(true);
@@ -156,7 +183,7 @@ public class LoginUtils {
             slider.setDuration(Duration.seconds(.5));
 
             slider.setOnFinished((ActionEvent e) -> {
-                panel3.setVisible(false);
+                panel3.setVisible(true);
                 panel2.setVisible(true);
                 button1.setVisible(true);
                 button2.setVisible(false);
@@ -167,4 +194,67 @@ public class LoginUtils {
             slider.play();
         }
     }
+    public static void forgotPass(String cccd, AnchorPane panel1, AnchorPane panel2){
+        final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        final int length = 10;
+        if(!cccd.isBlank()){
+            Connection connection ;
+            String email = null;
+            try {
+                connection = Database.connectDB();
+                String sqlCheck = "SELECT email FROM users WHERE username = ?";
+                PreparedStatement prepCheck = connection.prepareStatement(sqlCheck);
+                prepCheck.setString(1, cccd);
+                ResultSet resultCheck = prepCheck.executeQuery();
+                while (resultCheck.next()){
+                    email=resultCheck.getString("email");
+                }
+
+                String randomString = "";
+                Random random = new Random();
+                for (int i = 0; i < length; i++) {
+                    int index = random.nextInt(CHARACTERS.length());
+                    randomString += CHARACTERS.charAt(index);
+                }
+                String sqlUpdate = "UPDATE users SET password = ? WHERE username = ?";
+                PreparedStatement prepareStatement = connection.prepareStatement(sqlUpdate);
+                prepareStatement.setString(1, randomString);
+                prepareStatement.setString(2, cccd);
+                prepareStatement.executeUpdate();
+
+                ConnectGmail connectGmail=new ConnectGmail();
+                connectGmail.SendEmail(email,"Mật khẩu mới","Mật khẩu mới của bạn là: "+randomString);
+
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Mật Khẩu mới đã được gửi tới gmail của bạn!", ButtonType.OK);
+                alert.setTitle("Hộp thoại thông báo");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+
+                if (alert.getResult() == ButtonType.OK) {
+                    panel1.setVisible(true);
+                    panel2.setVisible(false);
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Hộp thoại báo lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng nhập số căn cước công dân!");
+            alert.show();
+        }
+
+
+
+
+
+    }
+
+
+
 }

@@ -1,15 +1,15 @@
 USE OOP_schema;
 create table users (
-	id int not null,
+	email varchar(50) not null,
     username varchar(12) not null,
     password varchar(30) not null,
     user_name nvarchar(50) not null
 );
 alter table users
 add constraint pk_users primary key(username);
-INSERT INTO users (id, username, password, user_name) 
+INSERT INTO users (email, username, password, user_name)
 VALUES 
-(1, '066205003632', 'viethung', N'Nguyễn Việt Hùng');
+('your@gmail.com', '066205003632', 'viethung', N'Nguyễn Việt Hùng');
 create table candidate (
 	name nvarchar(50) not null,
     gender nvarchar(3) not null,

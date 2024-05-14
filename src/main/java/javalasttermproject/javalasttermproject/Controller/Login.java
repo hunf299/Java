@@ -24,8 +24,6 @@ public class Login implements Initializable {
     @FXML
     private URL location;
 
-    @FXML
-    private PasswordField againpass_field;
 
     @FXML
     private AnchorPane authentication_panel;
@@ -40,7 +38,13 @@ public class Login implements Initializable {
     private Button login_button;
 
     @FXML
-    private PasswordField newpass_field;
+    private TextField newpass_field;
+
+    @FXML
+    private TextField oldpass_field;
+    @FXML
+    private TextField againpass_field;
+
 
     @FXML
     private PasswordField passwordfield;
@@ -86,11 +90,46 @@ public class Login implements Initializable {
 
     @FXML
     private TextField idcheck_textfield;
+    @FXML
+    private Hyperlink forgot_pass;
+    @FXML
+    private AnchorPane view_forgot;
+    @FXML
+    private StackPane view_login;
+    @FXML
+    private Button btn_comeBackLogin;
+    @FXML
+    private TextField text_forgotPass;
+
+    @FXML
+    private Button btn_forgotPass;
 
     static String tempID;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        forgot_pass.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                view_forgot.setVisible(true);
+                login_panel.setVisible(false);
+            }
+        });
+        btn_comeBackLogin.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                view_forgot.setVisible(false);
+                login_panel.setVisible(true);
+            }
+        });
+        btn_forgotPass.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                LoginUtils.forgotPass(text_forgotPass.getText(),login_panel, view_forgot);
+
+            }
+        });
+
         login_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -100,19 +139,37 @@ public class Login implements Initializable {
         transition_alreadyacc_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                LoginUtils.switchForm(actionEvent, transition_forgetpass_button, transition_alreadyacc_button, transition_panel, login_panel, forgetpass_stackpanel, transition_alreadyacc_label, transition_forgetpass_label);
+                login_panel.setVisible(true);
+                view_forgot.setVisible(false);
+                LoginUtils.switchForm(actionEvent, transition_forgetpass_button, transition_alreadyacc_button, transition_panel, login_panel, forgetpass_stackpanel, transition_alreadyacc_label, transition_forgetpass_label,view_forgot);
             }
         });
         transition_forgetpass_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                LoginUtils.switchForm(actionEvent, transition_forgetpass_button, transition_alreadyacc_button, transition_panel, login_panel, forgetpass_stackpanel, transition_alreadyacc_label, transition_forgetpass_label);
+                changepass_panel.setVisible(false);
+                fillingid_panel.setVisible(true);
+                LoginUtils.switchForm(actionEvent, transition_forgetpass_button, transition_alreadyacc_button, transition_panel, login_panel, forgetpass_stackpanel, transition_alreadyacc_label, transition_forgetpass_label,view_forgot);
+                passwordfield.setText("");
+                username_textfield.setText("");
+                idcheck_textfield.setText("");
+                oldpass_field.setText("");
+                newpass_field.setText("");
+                againpass_field.setText("");
             }
         });
         save_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                LoginUtils.changePass_Login(event,idcheck_textfield.getText(),newpass_field.getText(),againpass_field.getText(),transition_forgetpass_button, transition_alreadyacc_button, transition_panel, login_panel, forgetpass_stackpanel, transition_alreadyacc_label, transition_forgetpass_label);
+                changepass_panel.setVisible(false);
+                fillingid_panel.setVisible(true);
+                LoginUtils.changePass_Login(event,idcheck_textfield.getText(),oldpass_field.getText(), newpass_field.getText(),againpass_field.getText(),transition_forgetpass_button, transition_alreadyacc_button, transition_panel, login_panel, forgetpass_stackpanel, transition_alreadyacc_label, transition_forgetpass_label);
+                passwordfield.setText("");
+                username_textfield.setText("");
+                idcheck_textfield.setText("");
+                oldpass_field.setText("");
+                newpass_field.setText("");
+                againpass_field.setText("");
             }
         });
         id_submit_button.setOnAction(new EventHandler<ActionEvent>() {
@@ -135,7 +192,6 @@ public class Login implements Initializable {
                     }
                     else {
                         fillingid_panel.setVisible(false);
-                        authentication_panel.setVisible(false);
                         changepass_panel.setVisible(true);
                     }
                 }
@@ -144,5 +200,10 @@ public class Login implements Initializable {
                 }
             }
         });
+
+
+
+
+
     }
 }

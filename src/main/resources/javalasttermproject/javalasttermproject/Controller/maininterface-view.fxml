@@ -36,8 +36,8 @@
                      </image></ImageView>
                   <AnchorPane layoutX="7.0" layoutY="61.0" prefHeight="581.0" prefWidth="164.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="1.0" AnchorPane.topAnchor="61.0">
                      <children>
-                        <Button fx:id="form_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="-2.0" layoutY="91.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="175.0" style="-fx-background-color: transparent;" text="Phiếu đăng ký" textFill="WHITE" />
-                        <MenuButton fx:id="option_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="148.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="165.0" style="-fx-background-color: transparent;" text="Tra cứu" textAlignment="CENTER" textFill="WHITE">
+                        <Button id="btn_menu" fx:id="form_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="33.0" layoutY="89.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="137.0" style="-fx-background-color: transparent; -fx-font-size: 17px; -fx-font-weight: bold" text="Phiếu đăng ký" textFill="WHITE" />
+                        <MenuButton id="btn_menu" fx:id="option_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="17.0" layoutY="144.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="142.0" style="-fx-background-color: transparent; -fx-font-size: 17px; -fx-font-weight: bold" text="Tra cứu" textAlignment="CENTER" textFill="WHITE">
                            <items>
                               <MenuItem fx:id="testinfo_item" mnemonicParsing="false" text="Tra cứu giấy báo dự thi" />
                               <MenuItem fx:id="score_item" mnemonicParsing="false" text="Tra cứu điểm thi" />
@@ -55,21 +55,17 @@
                            <image>
                               <Image url="@Image/list.png" />
                            </image></ImageView>
-                        <MenuButton fx:id="profile_button" alignment="BASELINE_CENTER" layoutX="-2.0" layoutY="544.0" mnemonicParsing="false" popupSide="TOP" prefHeight="31.0" prefWidth="173.0" style="-fx-background-color: transparent;" textFill="WHITE">
-                           <items>
-                              <MenuItem fx:id="changepass_item" mnemonicParsing="false" text="Đổi mã đăng nhập" />
-                              <MenuItem fx:id="logout_item" mnemonicParsing="false" text="Đăng xuất" />
-                           </items>
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </MenuButton>
                         <ImageView fx:id="list_icon2" fitHeight="23.0" fitWidth="21.0" layoutX="12.0" layoutY="207.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="207.0">
                            <image>
                               <Image url="@Image/list.png" />
                            </image></ImageView>
-                        <Button fx:id="request_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="203.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="165.0" style="-fx-background-color: transparent;" text="Tuyển sinh" textFill="WHITE" />
-                        <Button fx:id="home_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="-7.0" layoutY="29.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="177.0" style="-fx-background-color: transparent;" text="Trang chủ" textFill="WHITE" />
+                        <Button id="btn_menu" fx:id="request_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="21.0" layoutY="198.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="138.0" style="-fx-background-color: transparent; -fx-font-size: 17px; -fx-font-weight: bold" text="Tuyển sinh" textFill="WHITE" />
+                        <Button id="btn_menu" fx:id="home_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="25.0" layoutY="27.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="118.0" style="-fx-background-color: transparent; -fx-font-size: 17px; -fx-font-weight: bold" text="Trang chủ" textFill="WHITE" />
+                        <Button id="btn_logout" fx:id="logout_item" layoutX="19.0" layoutY="545.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="129.0" style="-fx-background-color: transparent;" text="Đăng xuất" textFill="#000000f0">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                   <Line fx:id="form_line" endX="4.0" endY="93.0" fill="BLACK" layoutX="1.0" layoutY="84.0" startX="4.0" startY="74.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.5" visible="false" />
@@ -162,7 +158,6 @@
                         <RadioButton fx:id="thptqg_radiobutton_dashboard" layoutX="329.0" layoutY="44.0" mnemonicParsing="false" />
                         <Label fx:id="outsidecandidate_label_form1" layoutX="14.0" layoutY="72.0" text="- Thí sinh tự do:" />
                         <Label fx:id="appliedsubject_label_form1" layoutX="14.0" layoutY="101.0" text="- Đăng ký bài thi/môn thi:" />
-                        <Label fx:id="method_label_form1" layoutX="376.0" layoutY="44.0" text="- Hình thức giáo dục phổ thông:" />
                         <TextField fx:id="method_textfield_dashboard" editable="false" layoutX="575.0" layoutY="39.0" prefHeight="26.0" prefWidth="65.0" style="-fx-background-color: transparent;" />
                         <TextField fx:id="free_textfield_dashboard" editable="false" layoutX="135.0" layoutY="67.0" style="-fx-background-color: transparent;" />
                         <TextField fx:id="subject_field_dashboard" editable="false" layoutX="166.0" layoutY="96.0" style="-fx-background-color: transparent;" />

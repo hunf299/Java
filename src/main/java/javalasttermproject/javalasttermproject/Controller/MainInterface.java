@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import javafx.collections.*;
 import javafx.event.*;
 import javafx.fxml.*;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
@@ -440,7 +441,7 @@ public class MainInterface implements Initializable {
     private TextField living_textfield_form;
 
     @FXML
-    private MenuItem logout_item;
+    private Button logout_item;
 
     @FXML
     private Label major1_dashboard_field;
@@ -843,6 +844,8 @@ public class MainInterface implements Initializable {
 
     @FXML
     private CategoryAxis x_axis;
+
+    private Alert alert;
 
     private Connection connect;
     private PreparedStatement prepare;
@@ -1466,7 +1469,7 @@ public class MainInterface implements Initializable {
         name_label.setText(nameLabel);
         tempName = nameLabel;
         idnum_label.setText(LoginUtils.tempUserName);
-        profile_button.setText(nameLabel);
+//        profile_button.setText(nameLabel);
         name_textfield.setText(nameLabel);
         name_textfield.setEditable(false);
         idnum_textfield.setEditable(false);
@@ -1574,32 +1577,32 @@ public class MainInterface implements Initializable {
             option_line.setVisible(false);
             request_line.setVisible(true);
         });
-        changepass_item.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                MainUtils.changeStage(event, "Đổi mã đăng nhập - Hệ thống quản lí thi tốt nghiệp THPTQG", "changepass-view.fxml",600,400);
-            }
-        });
+
         logout_item.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                ContextMenu contextMenu = logout_item.getParentPopup();
-                Stage stage = (Stage) contextMenu.getOwnerWindow();
-                FXMLLoader fxmlLoader;
-                fxmlLoader = new FXMLLoader(ChangePassword.class.getResource("login-view.fxml"));
-                Scene scene = null;
                 try {
-                    scene = new Scene(fxmlLoader.load(),900,700);
-                }
-                catch (IOException e) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Xác nhận thoát");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Bạn có chắc chắn muốn thoát không?");
+                    Optional<ButtonType> option = alert.showAndWait();
+
+                    if (option.isPresent() && option.get() == ButtonType.OK) {
+
+                        logout_item.getScene().getWindow().hide();
+                        Parent root = FXMLLoader.load(getClass().getResource("login-view.fxml"));
+                        Stage stage = new Stage();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                stage.setScene(scene);
-                stage.setTitle("Đăng nhập - Hệ thống quản lí thi tốt nghiệp THPTQG");
-                stage.setResizable(false);
-                stage.show();
             }
         });
+
         EventHandler<ActionEvent> action1 = event -> {
             dashboard_panel.setVisible(false);
             form_stackpanel.setVisible(false);
