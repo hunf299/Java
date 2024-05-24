@@ -74,7 +74,7 @@
                   <Line fx:id="home_line" endX="-8.0" endY="93.0" fill="BLACK" layoutX="13.0" layoutY="21.0" startX="-8.0" startY="75.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.5" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="dashboard_panel" layoutX="216.0" layoutY="33.0" prefHeight="644.0" prefWidth="679.0">
+            <AnchorPane fx:id="dashboard_panel" layoutX="216.0" layoutY="33.0" prefHeight="644.0" prefWidth="679.0" visible="false">
                <children>
                   <Label fx:id="hello_label" layoutX="9.0" layoutY="9.0" text="Xin chào" textFill="#949393" />
                   <Label fx:id="name_label" layoutX="8.0" layoutY="25.0" prefHeight="26.0" prefWidth="251.0">
@@ -460,8 +460,8 @@
                               <TableView fx:id="subjectandtime_table" layoutY="46.0" prefHeight="157.0" prefWidth="564.0">
                                  <columns>
                                     <TableColumn fx:id="subject_column" editable="false" prefWidth="94.0" style="-fx-alignment: CENTER;" text="Bài thi" />
-                                    <TableColumn fx:id="literature_column" editable="false" prefWidth="55.5" style="-fx-alignment: CENTER;" text="Ngữ Văn" />
-                                    <TableColumn fx:id="math_column" editable="false" minWidth="1.532989501953125" prefWidth="48.5" style="-fx-alignment: CENTER;" text="Toán" />
+                                    <TableColumn fx:id="literature_column" editable="false" prefWidth="58.4000244140625" style="-fx-alignment: CENTER;" text="Ngữ Văn" />
+                                    <TableColumn fx:id="math_column" editable="false" minWidth="1.532989501953125" prefWidth="40.0" style="-fx-alignment: CENTER;" text="Toán" />
                                     <TableColumn fx:id="science_column" editable="false" prefWidth="137.5" text="KHTN">
                                        <columns>
                                           <TableColumn fx:id="physic_column" editable="false" prefWidth="52.57025146484375" style="-fx-alignment: CENTER;" text="Vật lý" />
@@ -469,8 +469,8 @@
                                           <TableColumn fx:id="bio_column" editable="false" prefWidth="56.96466064453125" style="-fx-alignment: CENTER;" text="Sinh học" />
                                        </columns>
                                     </TableColumn>
-                                    <TableColumn fx:id="foreignlanguage_column" editable="false" minWidth="8.71783447265625" prefWidth="67.3944091796875" style="-fx-alignment: CENTER;" text="Ngoại ngữ" />
-                                    <TableColumn fx:id="socialscience_column" editable="false" prefWidth="150.9139404296875" text="KHXH">
+                                    <TableColumn fx:id="foreignlanguage_column" editable="false" minWidth="8.71783447265625" prefWidth="71.199951171875" style="-fx-alignment: CENTER;" text="Ngoại ngữ" />
+                                    <TableColumn fx:id="socialscience_column" editable="false" prefWidth="139.2000732421875" text="KHXH">
                                        <columns>
                                           <TableColumn fx:id="history_column" editable="false" prefWidth="53.5506591796875" style="-fx-alignment: CENTER;" text="Lịch sử" />
                                           <TableColumn fx:id="geo_column" editable="false" prefWidth="48.45306396484375" style="-fx-alignment: CENTER;" text="Địa lý" />
@@ -768,7 +768,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="request_panel" layoutX="225.0" layoutY="31.0" prefHeight="643.0" prefWidth="657.0" visible="false">
+            <AnchorPane fx:id="request_panel" layoutX="225.0" layoutY="31.0" prefHeight="643.0" prefWidth="657.0">
                <children>
                   <Label fx:id="request_label" layoutX="147.0" layoutY="8.0" text="Thông tin đăng ký nguyện vọng của thí sinh">
                      <font>
@@ -796,7 +796,7 @@
                   </ButtonBar>
                   <AnchorPane fx:id="firstrequest_panel1" layoutX="3.0" layoutY="108.0" prefHeight="157.0" prefWidth="650.0" style="-fx-background-color: #ffffff; -fx-background-radius: 20;">
                      <children>
-                        <Label fx:id="order_label_fill" layoutX="48.0" layoutY="25.0" text="Thứ tự nguyện vọng">
+                        <Label fx:id="order_label_fill" layoutX="37.0" layoutY="24.0" text="Thứ tự nguyện vọng">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
@@ -808,22 +808,22 @@
                         <Label fx:id="trainingprogram_label1" layoutX="236.0" layoutY="119.0" prefHeight="17.0" prefWidth="124.0" text="Chương trình đào tạo:" />
                         <ComboBox fx:id="trainingunit_combobox_fill" layoutX="316.0" layoutY="81.0" prefWidth="150.0" style="-fx-background-color: transparent; -fx-border-color: #d3d3d3; -fx-border-radius: 5;" />
                         <ComboBox fx:id="trainingprogram_combobox_fill" layoutX="372.0" layoutY="114.0" prefHeight="28.0" prefWidth="207.0" style="-fx-background-color: transparent; -fx-border-color: #d3d3d3; -fx-border-radius: 5;" />
-                        <TextField fx:id="uni_textfield" layoutX="300.0" layoutY="15.0" prefHeight="26.0" prefWidth="303.0" />
-                        <TextField fx:id="majorname_textfield" layoutX="300.0" layoutY="48.0" prefHeight="26.0" prefWidth="303.0" />
                         <TextField fx:id="requestorder_textfield" alignment="CENTER" layoutX="39.0" layoutY="49.0" prefHeight="88.0" prefWidth="160.0" style="-fx-background-color: transparent;">
                            <font>
                               <Font name="System Bold Italic" size="46.0" />
                            </font>
                         </TextField>
+                        <ComboBox fx:id="uni_combobox" layoutX="300.0" layoutY="14.0" prefHeight="26.0" prefWidth="303.0" style="-fx-background-color: transparent; -fx-border-color: #d3d3d3; -fx-border-radius: 5;" />
+                        <ComboBox fx:id="majors_combobox" layoutX="300.0" layoutY="47.0" prefHeight="26.0" prefWidth="303.0" style="-fx-background-color: transparent; -fx-border-color: #d3d3d3; -fx-border-radius: 5;" />
                      </children>
                   </AnchorPane>
                   <TableView fx:id="request_tableview" layoutX="3.0" layoutY="281.0" prefHeight="362.0" prefWidth="650.0">
                     <columns>
                       <TableColumn fx:id="order_column" editable="false" prefWidth="43.0" text="Thứ tự" />
                       <TableColumn fx:id="uni_column" editable="false" minWidth="9.0" prefWidth="230.0" text="Trường" />
-                        <TableColumn fx:id="major_column" editable="false" minWidth="9.0" prefWidth="188.0" text="Ngành" />
-                        <TableColumn fx:id="unit_column" editable="false" minWidth="9.0" prefWidth="65.0" text="Hệ đào tạo" />
-                        <TableColumn fx:id="program_column" editable="false" minWidth="9.0" prefWidth="119.0" text="Chương trình đào tạo" />
+                        <TableColumn fx:id="major_column" editable="false" minWidth="9.0" prefWidth="176.80001831054688" text="Ngành" />
+                        <TableColumn fx:id="unit_column" editable="false" minWidth="9.0" prefWidth="68.0" text="Hệ đào tạo" />
+                        <TableColumn fx:id="program_column" editable="false" minWidth="9.0" prefWidth="129.5999755859375" text="Chương trình đào tạo" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

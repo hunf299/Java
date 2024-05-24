@@ -1,0 +1,13 @@
+DDG-Khoa Giáo dục thể chất
+DDY-Khoa Y dược
+DDK-Đại học Bách Khoa
+VKU-Đại học Công nghệ thông tin và Truyền thông Việt Hàn
+DDT-Đại học Duy Tân
+FPT-Đại học FPT Đà Nẵng
+KTD-Đại học Kiến trúc Đà Nẵng
+DDQ-Đại học Kinh Tế
+YDN-Đại học Kỹ thuật Y-Dược
+DDF-Đại học Ngoại Ngữ
+DSK-Đại học Sư phạm Kỹ thuật
+TTD-Đại học Thể dục Thể thao Đà Nẵng
+DAD-Đại học Đông Á
