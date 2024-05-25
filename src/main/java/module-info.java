@@ -4,6 +4,9 @@ module javalasttermproject.javalasttermproject.Controller {
     requires java.sql;
     requires javafx.graphics;
     requires org.apache.commons.mail;
+    requires kernel;
+    requires layout;
+
 
     exports javalasttermproject.javalasttermproject.Controller;
     opens javalasttermproject.javalasttermproject.Controller to javafx.fxml;

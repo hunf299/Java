@@ -3,6 +3,7 @@ package javalasttermproject.javalasttermproject.Controller;
 import java.io.*;
 import java.net.URL;
 import java.sql.*;
+import java.text.Normalizer;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,7 +11,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.properties.TextAlignment;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.*;
@@ -25,8 +33,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javalasttermproject.javalasttermproject.Model.*;
+
+
+
 
 public class MainInterface implements Initializable {
 
@@ -167,6 +179,8 @@ public class MainInterface implements Initializable {
 
     @FXML
     private Button delete_button;
+    @FXML
+    private Button printForm_button;
 
     @FXML
     private Button deleterequest_button;
@@ -885,9 +899,6 @@ public class MainInterface implements Initializable {
     public ArrayList listNameMajors(String check) {
         String nameSchool= null;
         switch (check){
-            case "DDG-Khoa Giáo dục thể chất":
-                nameSchool="ListDDG.txt";
-                break;
             case "DDY-Khoa Y dược":
                 nameSchool="ListDDY.txt";
                 break;
@@ -917,9 +928,6 @@ public class MainInterface implements Initializable {
                 break;
             case "DSK-Đại học Sư phạm Kỹ thuật":
                 nameSchool="ListDSK.txt";
-                break;
-            case "TTD-Đại học Thể dục Thể thao Đà Nẵng":
-                nameSchool="ListTTD.txt";
                 break;
             case "DAD-Đại học Đông Á":
                 nameSchool="ListDAD.txt";
@@ -1618,9 +1626,16 @@ public class MainInterface implements Initializable {
 
 
 
-    public void printFile(){
-        
+    private String editText(String input) {
+        // Chuẩn hóa chuỗi để loại bỏ dấu
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);// các chứ có dấu sẽ chuyển thành các chữ k dấu tương tự
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");//xóa các dầu sau khi chuỗi trên đã chuẩn hóa
+        String noDiacritics = pattern.matcher(normalized).replaceAll("");//xóa các dâu cách
+        // Loại bỏ tất cả các ký tự không phải chữ cái hoặc số và khoảng trắng
+        return noDiacritics.replaceAll("Đ","D").replaceAll("đ","d").replaceAll("[^a-zA-Z0-9]", "");
     }
+
+
 
 
 
@@ -1879,6 +1894,10 @@ public class MainInterface implements Initializable {
                     result = statement.executeQuery(checkAvailable);
                     if (result.next()) {
                         changeCandidate();
+                        delete_button.setVisible(true);
+                        change_button.setVisible(true);
+                        showform_panel.setVisible(true);
+                        fillform_panel.setVisible(false);
                     }
                     else {
                         candidateAdd();
@@ -1886,6 +1905,7 @@ public class MainInterface implements Initializable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+
             }
         });
         naturalscience.setOnAction(new EventHandler<ActionEvent>() {
@@ -2134,6 +2154,101 @@ public class MainInterface implements Initializable {
                         }
                     }
                 }
+            }
+        });
+        printForm_button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(name_textfield_form.getText()==null ||
+                        birthdate_textfield_form.getText()==null ||
+                        nation_textfield_form.getText()==null ||
+                        birthplace_textfield1.getText()==null
+                        ){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Hộp thoại báo lỗi");
+                    alert.setHeaderText("Lỗi");
+                    alert.setContentText("Chưa có dữ liệu để xuất!");
+                    alert.showAndWait();
+                }
+                else {
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
+                    String nameClear=editText(nameLabel) ;
+                    fileChooser.setInitialFileName(nameClear+".pdf");
+
+                    File file=fileChooser.showSaveDialog(new Stage());
+
+                    if(file != null){
+                        PdfWriter writer = null;
+                        try {
+                            writer = new PdfWriter(file.getAbsolutePath());
+                            // Tạo PdfDocument
+                            PdfDocument pdfDoc = new PdfDocument(writer);
+                            // Tạo Document
+                            Document document = new Document(pdfDoc);
+                            document.setFont(PdfFontFactory.createFont("C:\\Windows\\Fonts\\arial.ttf"));
+
+                            // Thêm tiêu đề
+                            document.add(new Paragraph("Thông tin học sinh").setBold().setFontSize(24)
+                                    .setMarginBottom(5).setTextAlignment(TextAlignment.CENTER));
+
+
+
+
+                            // Thêm thông tin học sinh
+                            document.add(new Paragraph("A.Thông tin cá nhân").setFontSize(17).setBold());
+                            document.add(new Paragraph("Họ và tên: "+name_textfield_form.getText()));
+                            document.add(new Paragraph("Ngày sinh: "+birthdate_textfield_form.getText()+"                                   Giới tính: "+gender_textfield_form.getText()));
+                            document.add(new Paragraph("Dân tộc: "+nation_textfield_form.getText()+"                                                  Số cccd/cmnd: "+idnum_textfield.getText()));
+                            document.add(new Paragraph("Nơi sinh: "+birthplace_textfield1.getText()));
+                            document.add(new Paragraph("Nơi thường trú: "+living_textfield_form.getText()));
+                            document.add(new Paragraph("Trường học hiện tại: "+highschool_textfield_form.getText()));
+                            document.add(new Paragraph("Số điện thoại: "+mobile_textfield_form.getText()+"                                    Email: "+email_textfield.getText()));
+                            document.add(new Paragraph("Địa chỉ liên hệ: "+address_textfield_form.getText()));
+
+                            document.add(new Paragraph("B.Thông tin đăng ký").setFontSize(17).setBold());
+                            String thpt="Không";
+                            if(thptqg_radiobutton_form.isSelected()){
+                                thpt="Có";
+                            }
+                            document.add(new Paragraph("Sử dụng kết quả thi THPT để xét tuyển ĐH, CĐ"+thpt));
+                            document.add(new Paragraph("Hình thức giáo dục phổ thông: "+method_textfield_form.getText()));
+                            document.add(new Paragraph("Thí sinh tự do: "+free_textfield_form.getText()));
+
+                            String toHop="";
+                            if(math_form.isSelected()){
+                                toHop="Toán học";
+                            }
+                            if(literature_form.isSelected()){
+                                toHop=", Văn học";
+                            }
+
+                            if(foreignlanguage_form.isSelected()){
+                                toHop=", Ngoại ngữ";
+                            }
+                            if(naturalscience_form.isSelected()){
+                                toHop=", Vật lí, Hóa học, Sinh học";
+                            }
+                            if(socialscience_form.isSelected()){
+                                toHop=", Lịch sử, Địa lí, GDCD";
+                            }
+
+                            document.add(new Paragraph("Tổ hợp môn thi: "+toHop));
+
+                            document.add(new Paragraph("Thí sinh ký tên").setTextAlignment(TextAlignment.RIGHT).setMarginRight(52));
+                            document.add(new Paragraph(""));
+                            document.add(new Paragraph(""));
+                            document.add(new Paragraph(""));
+                            document.add(new Paragraph(nameLabel).setTextAlignment(TextAlignment.RIGHT).setMarginRight(50));
+
+                            // Đóng tài liệu
+                            document.close();
+                        }catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+
             }
         });
     }
