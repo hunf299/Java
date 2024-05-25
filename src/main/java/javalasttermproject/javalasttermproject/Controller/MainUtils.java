@@ -4,10 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -55,7 +53,7 @@ public class MainUtils {
         return receivedResult;
     }
 
-    public static void changeStage(ActionEvent event, String title, String url, int width, int height) {
+    public static void changeStage(MouseEvent event, String title, String url, int width, int height) {
         FXMLLoader fxmlLoader;
         fxmlLoader = new FXMLLoader(ChangePassword.class.getResource(url));
         Scene scene = null;
@@ -85,6 +83,14 @@ public class MainUtils {
         }
         else {
             radioButton.setSelected(false);
+        }
+    }
+    public static void transferInttoString(String receivedResult, Label label) {
+        if (receivedResult.equals("1")) {
+            label.setText("Có");
+        }
+        else {
+            label.setText("Không");
         }
     }
     public static void transferString(RadioButton radioButton, RadioButton radioButton1, String receivedResult, String check) {
@@ -138,6 +144,39 @@ public class MainUtils {
             data.setTextFill(Color.GREEN);
         }
     }
+    public static boolean isRequestMatchUniInfo(String uniName, String major, String trainingUnit, String trainingProgram) {
+        boolean isMatch = false;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = Database.connectDB();
+            String query = "SELECT * FROM uniinfo WHERE name = ? AND major = ? AND training_unit = ? AND training_program = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, uniName);
+            preparedStatement.setString(2, major);
+            preparedStatement.setString(3, trainingUnit);
+            preparedStatement.setString(4, trainingProgram);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                isMatch = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return isMatch;
+    }
     public static void getScienceScore(String subject, Label data) {
         Connection connection = null;
         String sqlQuery = "SELECT " + subject + " FROM score WHERE personal_id = '" + LoginUtils.tempUserName + "'";
@@ -168,7 +207,7 @@ public class MainUtils {
                 data.setTextFill(Color.ORANGE);
             }
             else if (transfer < 9) {
-                data.setTextFill(Color.YELLOW);
+                data.setTextFill(Color.web("#f9ff88"));
             }
             else {
                 data.setTextFill(Color.GREEN);

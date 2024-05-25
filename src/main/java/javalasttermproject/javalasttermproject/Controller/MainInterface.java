@@ -1,23 +1,38 @@
 package javalasttermproject.javalasttermproject.Controller;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.*;
+import java.text.Normalizer;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.properties.TextAlignment;
+import javafx.stage.FileChooser;
+
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.*;
 import javafx.event.*;
 import javafx.fxml.*;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
@@ -32,10 +47,10 @@ public class MainInterface implements Initializable {
     private URL location;
 
     @FXML
-    private Label a00;
+    private Label a001;
 
     @FXML
-    private Label a01;
+    private Label a011;
 
     @FXML
     private Button addrequest_button;
@@ -62,10 +77,10 @@ public class MainInterface implements Initializable {
     private Label appliedsubject_label_form1;
 
     @FXML
-    private Label b00;
+    private Label b001;
 
     @FXML
-    private Label b08;
+    private Label b081;
 
     @FXML
     private RadioButton bio;
@@ -74,13 +89,10 @@ public class MainInterface implements Initializable {
     private TableColumn<SubjectInfo, String> bio_column;
 
     @FXML
-    private RadioButton bio_form;
+    private Label bio_score1;
 
     @FXML
-    private Label bio_score;
-
-    @FXML
-    private AnchorPane bio_scorepane;
+    private AnchorPane bio_scorepane1;
 
     @FXML
     private Label birthdate_label;
@@ -107,10 +119,10 @@ public class MainInterface implements Initializable {
     private TextField birthplace_textfield1;
 
     @FXML
-    private Label c00;
+    private Label c001;
 
     @FXML
-    private Label c19;
+    private Label c191;
 
     @FXML
     private Button change_button;
@@ -119,7 +131,7 @@ public class MainInterface implements Initializable {
     private Button changeorder_button;
 
     @FXML
-    private MenuItem changepass_item;
+    private Label changepass_item;
 
     @FXML
     private Label checkindateandtime_label;
@@ -140,25 +152,19 @@ public class MainInterface implements Initializable {
     private TableColumn<SubjectInfo, String> chemistry_column;
 
     @FXML
-    private RadioButton chemistry_form;
+    private Label chemistry_score1;
 
     @FXML
-    private Label chemistry_score;
-
-    @FXML
-    private AnchorPane chemistry_scorepane;
-
-    @FXML
-    private Label countdown_label;
+    private AnchorPane chemistry_scorepane1;
 
     @FXML
     private Label countdown_timer;
 
     @FXML
-    private Label d00;
+    private Label d001;
 
     @FXML
-    private Label d07;
+    private Label d071;
 
     @FXML
     private AnchorPane dashboard_panel;
@@ -212,10 +218,7 @@ public class MainInterface implements Initializable {
     private TableColumn<SubjectInfo, String> foreignlanguage_column;
 
     @FXML
-    private RadioButton foreignlanguage_form;
-
-    @FXML
-    private Label foreignlanguage_score;
+    private Label foreignlanguage_score1;
 
     @FXML
     private Button form_button;
@@ -228,9 +231,6 @@ public class MainInterface implements Initializable {
 
     @FXML
     private Button form_dashboard_editbutton;
-
-    @FXML
-    private Label form_dashboard_label;
 
     @FXML
     private Label form_label;
@@ -254,13 +254,10 @@ public class MainInterface implements Initializable {
     private TableColumn<SubjectInfo, String> gdcd_column;
 
     @FXML
-    private RadioButton gdcd_form;
+    private Label gdcd_score1;
 
     @FXML
-    private Label gdcd_score;
-
-    @FXML
-    private AnchorPane gdcd_scorepane;
+    private AnchorPane gdcd_scorepane1;
 
     @FXML
     private RadioButton gdtx_radiobutton;
@@ -281,13 +278,10 @@ public class MainInterface implements Initializable {
     private RadioButton geography;
 
     @FXML
-    private RadioButton geography_form;
+    private Label geography_score1;
 
     @FXML
-    private Label geography_score;
-
-    @FXML
-    private AnchorPane geography_scorepane;
+    private AnchorPane geography_scorepane1;
 
     @FXML
     private RadioButton graduated_radiobutton;
@@ -317,13 +311,10 @@ public class MainInterface implements Initializable {
     private TableColumn<SubjectInfo, String> history_column;
 
     @FXML
-    private RadioButton history_form;
+    private Label history_score1;
 
     @FXML
-    private Label history_score;
-
-    @FXML
-    private AnchorPane history_scorepane;
+    private AnchorPane history_scorepane1;
 
     @FXML
     private Button home_button;
@@ -380,16 +371,13 @@ public class MainInterface implements Initializable {
     private Line line;
 
     @FXML
-    private Line line1;
-
-    @FXML
     private Line line11;
 
     @FXML
     private Line line111;
 
     @FXML
-    private Line line12;
+    private Line line1111;
 
     @FXML
     private Line line121;
@@ -398,16 +386,19 @@ public class MainInterface implements Initializable {
     private Line line1211;
 
     @FXML
-    private Line line122;
+    private Line line12111;
 
     @FXML
     private Line line1221;
 
     @FXML
-    private Line line123;
+    private Line line12211;
 
     @FXML
-    private Line line13;
+    private Line line1231;
+
+    @FXML
+    private Line line131;
 
     @FXML
     private ImageView list_icon1;
@@ -416,16 +407,19 @@ public class MainInterface implements Initializable {
     private ImageView list_icon2;
 
     @FXML
+    private ImageView list_icon21;
+
+    @FXML
+    private ImageView list_icon211;
+
+    @FXML
     private RadioButton literature;
 
     @FXML
     private TableColumn<SubjectInfo, String> literature_column;
 
     @FXML
-    private RadioButton literature_form;
-
-    @FXML
-    private Label literature_score;
+    private Label literature_score1;
 
     @FXML
     private Label living_label;
@@ -440,7 +434,7 @@ public class MainInterface implements Initializable {
     private TextField living_textfield_form;
 
     @FXML
-    private MenuItem logout_item;
+    private Button logout_item;
 
     @FXML
     private Label major1_dashboard_field;
@@ -458,9 +452,6 @@ public class MainInterface implements Initializable {
     private Label major_label1;
 
     @FXML
-    private TextField majorname_textfield;
-
-    @FXML
     private RadioButton male_radiobutton;
 
     @FXML
@@ -470,22 +461,13 @@ public class MainInterface implements Initializable {
     private TableColumn<SubjectInfo, String> math_column;
 
     @FXML
-    private RadioButton math_form;
-
-    @FXML
-    private Label math_score;
+    private Label math_score1;
 
     @FXML
     private Label method_label;
 
     @FXML
     private Label method_label_form;
-
-    @FXML
-    private Label method_label_form1;
-
-    @FXML
-    private TextField method_textfield_dashboard;
 
     @FXML
     private TextField method_textfield_form;
@@ -501,6 +483,9 @@ public class MainInterface implements Initializable {
 
     @FXML
     private Label name_label1;
+
+    @FXML
+    private Label name_label2;
 
     @FXML
     private Label name_label_form;
@@ -527,7 +512,22 @@ public class MainInterface implements Initializable {
     private RadioButton naturalscience;
 
     @FXML
-    private RadioButton naturalscience_form;
+    private Label noformtoshow;
+
+    @FXML
+    private AnchorPane norequesttoview;
+
+    @FXML
+    private AnchorPane noscoretoview;
+
+    @FXML
+    private AnchorPane noscoretoview_panel;
+
+    @FXML
+    private Label notestinfotoview;
+
+    @FXML
+    private AnchorPane notestinfotoview_panel;
 
     @FXML
     private RadioButton notgraduated_radiobutton;
@@ -578,19 +578,19 @@ public class MainInterface implements Initializable {
     private TableColumn<SubjectInfo, String> physic_column;
 
     @FXML
-    private RadioButton physic_form;
+    private Label physic_score1;
 
     @FXML
-    private Label physic_score;
+    private AnchorPane physic_scorepane1;
 
     @FXML
-    private AnchorPane physic_scorepane;
-
-    @FXML
-    private MenuButton profile_button;
+    private Button printform_button;
 
     @FXML
     private TableColumn<Request, String> program_column;
+
+    @FXML
+    private AnchorPane prohibitedrequestpanel;
 
     @FXML
     private Button request_button;
@@ -662,7 +662,7 @@ public class MainInterface implements Initializable {
     private MenuItem score_item;
 
     @FXML
-    private AnchorPane score_panel;
+    private AnchorPane score_anchorpane;
 
     @FXML
     private ToggleGroup sex;
@@ -677,9 +677,6 @@ public class MainInterface implements Initializable {
     private TableColumn<?, ?> socialscience_column;
 
     @FXML
-    private RadioButton socialscience_form;
-
-    @FXML
     private TableColumn<SubjectInfo, String> subject_column;
 
     @FXML
@@ -689,13 +686,16 @@ public class MainInterface implements Initializable {
     private Label subject_label;
 
     @FXML
+    private TextArea subject_textarea;
+
+    @FXML
     private TableView<SubjectInfo> subjectandtime_table;
 
     @FXML
-    private Label testcheckin_label;
+    private ToggleGroup subjectcombo;
 
     @FXML
-    private Label testcheckin_label1;
+    private Label testcheckin_label;
 
     @FXML
     private Label testcheckin_label11;
@@ -704,7 +704,7 @@ public class MainInterface implements Initializable {
     private Label testcheckin_label111;
 
     @FXML
-    private Label testcheckin_label12;
+    private Label testcheckin_label1111;
 
     @FXML
     private Label testcheckin_label121;
@@ -713,13 +713,16 @@ public class MainInterface implements Initializable {
     private Label testcheckin_label1211;
 
     @FXML
-    private Label testcheckin_label122;
+    private Label testcheckin_label12111;
 
     @FXML
     private Label testcheckin_label1221;
 
     @FXML
-    private Label testcheckin_label123;
+    private Label testcheckin_label12211;
+
+    @FXML
+    private Label testcheckin_label1231;
 
     @FXML
     private AnchorPane testinfo_dashboard;
@@ -743,13 +746,10 @@ public class MainInterface implements Initializable {
     private AnchorPane testplace_panel;
 
     @FXML
-    private AnchorPane testplace_panel1;
-
-    @FXML
-    private AnchorPane testplace_panel11;
-
-    @FXML
     private AnchorPane testplace_panel111;
+
+    @FXML
+    private AnchorPane testplace_panel1111;
 
     @FXML
     private Label testvenue;
@@ -779,10 +779,10 @@ public class MainInterface implements Initializable {
     private RadioButton thptqg_radiobutton;
 
     @FXML
-    private RadioButton thptqg_radiobutton_dashboard;
+    private Label thptqg_radiobutton_dashboard;
 
     @FXML
-    private RadioButton thptqg_radiobutton_form;
+    private Label thptqg_radiobutton_form;
 
     @FXML
     private ComboBox<String> trainingprogram_combobox_fill;
@@ -791,7 +791,7 @@ public class MainInterface implements Initializable {
     private Label trainingprogram_label1;
 
     @FXML
-    private ComboBox<String> trainingunit_combobox_fill;
+    private Label trainingunit_fill;
 
     @FXML
     private Label trainingunit_label1;
@@ -812,9 +812,6 @@ public class MainInterface implements Initializable {
     private Label uni_label1;
 
     @FXML
-    private TextField uni_textfield;
-
-    @FXML
     private TableColumn<Request, String> unit_column;
 
     @FXML
@@ -827,22 +824,59 @@ public class MainInterface implements Initializable {
     private Label warning_label;
 
     @FXML
-    private Label warning_label1;
+    private Label warning_label11;
 
     @FXML
     private AnchorPane warning_panel;
 
     @FXML
-    private AnchorPane warning_panel1;
+    private AnchorPane warning_panel11;
 
     @FXML
     private TextArea warning_textarea;
 
     @FXML
+    private CategoryAxis x_axis;
+
+    @FXML
     private NumberAxis y_axis;
 
     @FXML
-    private CategoryAxis x_axis;
+    private ComboBox<String> uni_combobox;
+
+    @FXML
+    private ComboBox<String> majors_combobox;
+
+    private Alert alert;
+
+    IntegerProperty property = new SimpleIntegerProperty();
+
+    @FXML
+    private AnchorPane prohibitedstatusinfopanel;
+
+    @FXML
+    private TableColumn<StatusInfo, String> statusinfo_acceptedornot_column;
+
+    @FXML
+    private TableColumn<StatusInfo, String> statusinfo_major_column;
+
+    @FXML
+    private TableColumn<StatusInfo, String> statusinfo_program_column;
+
+    @FXML
+    private TableView<StatusInfo> statusinfo_tableview;
+
+    @FXML
+    private TableColumn<StatusInfo, String> statusinfo_uni_column;
+
+    @FXML
+    private TableColumn<StatusInfo, String> statusinfo_unit_column;
+
+    @FXML
+    private MenuItem statusinfo_item;
+
+    @FXML
+    private AnchorPane statusinfo_panel;
 
     private Connection connect;
     private PreparedStatement prepare;
@@ -851,8 +885,90 @@ public class MainInterface implements Initializable {
     private String tempName;
     private String tempDate;
     private String tempOrder;
-    ObservableList<String> traningunit_list = FXCollections.observableArrayList("Đại học", "Cao đẳng");
+    static String OS = null;
+    public static String getOsName() {
+        if(OS == null) { OS = System.getProperty("os.name"); }
+        return OS;
+    }
     ObservableList<String> trainingprogram_list = FXCollections.observableArrayList("Đại trà", "Chất lượng cao", "Tiên tiến");
+
+    ArrayList<String> listSchool= new ArrayList<>();
+    // đọc file ghi danh sách các trường vào 1 list
+    public ArrayList listNameSchool() {
+        listSchool.clear();
+        String url = "src/main/java/javalasttermproject/javalasttermproject/Model/List/ListSchool.txt";
+        File file = new File(url);
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                listSchool.add(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listSchool;
+    }
+    ObservableList<String> nameSchool_list = FXCollections.observableArrayList(listNameSchool());
+
+    private String editText(String input) {
+        // Chuẩn hóa chuỗi để loại bỏ dấu
+        String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);// các chứ có dấu sẽ chuyển thành các chữ k dấu tương tự
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");//xóa các dầu sau khi chuỗi trên đã chuẩn hóa
+        String noDiacritics = pattern.matcher(normalized).replaceAll("");//xóa các dâu cách
+        // Loại bỏ tất cả các ký tự không phải chữ cái hoặc số và khoảng trắng
+        return noDiacritics.replaceAll("Đ","D").replaceAll("đ","d").replaceAll("[^a-zA-Z0-9]", "");
+    }
+    public ArrayList listNameMajors(String check) {
+        String nameSchool= null;
+        switch (check){
+            case "DDY-Khoa Y dược-Đại học Đà Nẵng":
+                nameSchool="ListDDY.txt";
+                break;
+            case "DDK-Đại học Bách Khoa":
+                nameSchool="ListDDK.txt";
+                break;
+            case "VKU-Đại học Công nghệ thông tin và Truyền thông Việt Hàn":
+                nameSchool="ListVKU.txt";
+                break;
+            case "DDT-Đại học Duy Tân":
+                nameSchool="ListDDT.txt";
+                break;
+            case "FPT-Đại học FPT Đà Nẵng":
+                nameSchool="ListFPT.txt";
+                break;
+            case "DDQ-Đại học Kinh Tế":
+                nameSchool="ListDDQ.txt";
+                break;
+            case "YDN-Đại học Kỹ thuật Y-Dược":
+                nameSchool="ListYDN.txt";
+                break;
+            case "DDF-Đại học Ngoại Ngữ":
+                nameSchool="ListDDF.txt";
+                break;
+            case "DSK-Đại học Sư phạm Kỹ thuật":
+                nameSchool="ListDSK.txt";
+                break;
+            case "DAD-Đại học Đông Á":
+                nameSchool="ListDAD.txt";
+                break;
+            case "CPN-Cao đẳng Phương Đông":
+                nameSchool="ListCPN.txt";
+                break;
+        }
+
+        ArrayList<String> list=new ArrayList<>();
+        String url = "src/main/java/javalasttermproject/javalasttermproject/Model/List/"+nameSchool;
+        File file = new File(url);
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                list.add(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
     public String selectedFreeCandidate() {
         if (graduated_radiobutton.isSelected()) {
             return graduated_radiobutton.getText();
@@ -864,8 +980,15 @@ public class MainInterface implements Initializable {
             return "NULL";
         }
     }
+    public boolean isMobileNum(String str) {
+        return str.matches("\\d{9,10}");
+    }
     public boolean isNumeric(String str) {
         return str.matches("\\d+");
+    }
+    public boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return email.matches(emailRegex);
     }
     public ObservableList<SubjectInfo> addSubjectsListInfo() {
         ObservableList<SubjectInfo> listSubjectsInfo = FXCollections.observableArrayList();
@@ -885,7 +1008,6 @@ public class MainInterface implements Initializable {
         }
         return listSubjectsInfo;
     }
-
     public ObservableList<Request> addRequestsList() {
         ObservableList<Request> listRequests = FXCollections.observableArrayList();
         String receiver = "SELECT * FROM request WHERE personal_id = '" + LoginUtils.tempUserName + "'";
@@ -909,11 +1031,32 @@ public class MainInterface implements Initializable {
         connect = Database.connectDB();
         try {
             Alert alert;
-            if (name_textfield.getText().isEmpty() || sex.getSelectedToggle() == null || birthdate_textfield.getValue() == null || birthplace_textfield.getText().isEmpty() || nation_textfield.getText().isEmpty() || idnum_textfield.getText().isEmpty() || living_textfield.getText().isEmpty() || highschool_textfield.getText().isEmpty() || mobile_textfield.getText().isEmpty() || !isNumeric(mobile_textfield.getText()) || email_textfield.getText().isEmpty() || address_textfield.getText().isEmpty() ||  edumethod.getSelectedToggle() == null) {
+            if (name_textfield.getText().isEmpty() || sex.getSelectedToggle() == null || birthdate_textfield.getValue() == null || birthplace_textfield.getText().isEmpty() || nation_textfield.getText().isEmpty() || idnum_textfield.getText().isEmpty() || living_textfield.getText().isEmpty() || highschool_textfield.getText().isEmpty() || mobile_textfield.getText().isEmpty() || email_textfield.getText().isEmpty() || address_textfield.getText().isEmpty() ||  edumethod.getSelectedToggle() == null) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Hộp thoại báo lỗi");
                 alert.setHeaderText("Lỗi");
                 alert.setContentText("Vui lòng điền tất cả các thông tin bắt buộc!");
+                alert.showAndWait();
+            }
+            else if (!isMobileNum(mobile_textfield.getText())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hộp thoại báo lỗi");
+                alert.setHeaderText("Lỗi");
+                alert.setContentText("Vui lòng nhập đúng định dạng số điện thoại!");
+                alert.showAndWait();
+            }
+            else if (!isValidEmail(email_textfield.getText())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hộp thoại báo lỗi");
+                alert.setHeaderText("Lỗi");
+                alert.setContentText("Vui lòng nhập đúng định dạng email!");
+                alert.showAndWait();
+            }
+            else if (birthdate_textfield.getValue().getYear() > 2006) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hộp thoại báo lỗi");
+                alert.setHeaderText("Lỗi");
+                alert.setContentText("Vui lòng nhập đúng năm sinh được cho phép!");
                 alert.showAndWait();
             }
             else {
@@ -957,7 +1100,46 @@ public class MainInterface implements Initializable {
             e.printStackTrace();
         }
     }
-
+    public void checkPaneltoShow() {
+        if (thptqg_radiobutton_dashboard.getText().isEmpty()) {
+            noformtoshow.setVisible(true);
+        }
+        else {
+            noformtoshow.setVisible(false);
+        }
+        if (uni1_dashboard_field.getText().isEmpty()) {
+            norequesttoview.setVisible(true);
+        }
+        else {
+            norequesttoview.setVisible(false);
+        }
+        String dateTestInfo = "2024-05-23 23:59:59";
+        LocalDateTime currentDate = LocalDateTime.now();
+        DateTimeFormatter tempFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime tempDateTime = LocalDateTime.parse(dateTestInfo, tempFormatter);
+        Duration duration = Duration.between(currentDate, tempDateTime);
+        long daysBetween = duration.toDays();
+        if (daysBetween > 0) {
+            notestinfotoview.setVisible(true);
+            notestinfotoview_panel.setVisible(true);
+        }
+        String dateScore = "2024-05-23 23:59:59";
+        LocalDateTime tempDateScore = LocalDateTime.parse(dateScore, tempFormatter);
+        Duration duration1 = Duration.between(currentDate, tempDateScore);
+        long daysBetween1 = duration1.toDays();
+        if (daysBetween1 > 0) {
+            noscoretoview_panel.setVisible(true);
+            noscoretoview.setVisible(true);
+        }
+        String dateRequest = "2024-05-23 23:59:59";
+        LocalDateTime tempDateRequest = LocalDateTime.parse(dateScore, tempFormatter);
+        Duration duration2 = Duration.between(currentDate, tempDateRequest);
+        long daysBetween2 = duration2.toDays();
+        if (daysBetween2 > 0) {
+            norequesttoview.setVisible(true);
+            prohibitedrequestpanel.setVisible(true);
+        }
+    }
     public void showCandidateForm() {
         name_textfield_form.setText(tempName);
         gender_textfield_form.setText(MainUtils.setLabel("SELECT gender FROM OOP_schema.candidate where personal_id = ?", "gender", LoginUtils.tempUserName));
@@ -974,38 +1156,76 @@ public class MainInterface implements Initializable {
         mobile_textfield_form.setText(MainUtils.setLabel("SELECT mobilephone FROM OOP_schema.candidate where personal_id = ?", "mobilephone", LoginUtils.tempUserName));
         address_textfield_form.setText(MainUtils.setLabel("SELECT contactaddress FROM OOP_schema.candidate where personal_id = ?", "contactaddress", LoginUtils.tempUserName));
         String thptqgValue = MainUtils.setLabel("SELECT thptqg FROM OOP_schema.candidate where personal_id = ?", "thptqg", LoginUtils.tempUserName);
-        MainUtils.transferInt(thptqg_radiobutton_form, thptqgValue);
+        MainUtils.transferInttoString(MainUtils.setLabel("SELECT thptqg FROM candidate WHERE personal_id = ?", "thptqg", LoginUtils.tempUserName), thptqg_radiobutton_form);
         method_textfield_form.setText(MainUtils.setLabel("SELECT edumethod FROM OOP_schema.candidate where personal_id = ?", "edumethod", LoginUtils.tempUserName));
         String receivedFreeCandidate = MainUtils.setLabel("SELECT freecandidate FROM OOP_schema.candidate where personal_id = ?", "freecandidate", LoginUtils.tempUserName);
         if (!receivedFreeCandidate.equals("NULL")) {
             free_textfield_form.setText(receivedFreeCandidate);
         }
+        StringBuilder subjects = new StringBuilder();
+
         String mathValue = MainUtils.setLabel("SELECT math FROM OOP_schema.candidate where personal_id = ?", "math", LoginUtils.tempUserName);
-        MainUtils.transferInt(math_form, mathValue);
+        if (mathValue.equals("1")) {
+            subjects.append("Toán, ");
+        }
+
         String literatureValue = MainUtils.setLabel("SELECT literature FROM OOP_schema.candidate where personal_id = ?", "literature", LoginUtils.tempUserName);
-        MainUtils.transferInt(literature_form, literatureValue);
+        if (literatureValue.equals("1")) {
+            subjects.append("Ngữ Văn, ");
+        }
+
         String naturalscienceValue = MainUtils.setLabel("SELECT science FROM OOP_schema.candidate where personal_id = ?", "science", LoginUtils.tempUserName);
-        MainUtils.transferInt(naturalscience_form, naturalscienceValue);
+        if (naturalscienceValue.equals("1")) {
+            subjects.append("Khoa học tự nhiên: Vật lý, Hoá học, Sinh học, ");
+        }
+        else {
+            String physicValue = MainUtils.setLabel("SELECT physic FROM OOP_schema.candidate where personal_id = ?", "physic", LoginUtils.tempUserName);
+            if (physicValue.equals("1")) {
+                subjects.append("Vật lý, ");
+            }
+
+            String chemistryValue = MainUtils.setLabel("SELECT chemistry FROM OOP_schema.candidate where personal_id = ?", "chemistry", LoginUtils.tempUserName);
+            if (chemistryValue.equals("1")) {
+                subjects.append("Hoá học, ");
+            }
+
+            String bioValue = MainUtils.setLabel("SELECT bio FROM OOP_schema.candidate where personal_id = ?", "bio", LoginUtils.tempUserName);
+            if (bioValue.equals("1")) {
+                subjects.append("Vật lý, ");
+            }
+        }
+
         String socialscienceValue = MainUtils.setLabel("SELECT social FROM OOP_schema.candidate where personal_id = ?", "social", LoginUtils.tempUserName);
-        MainUtils.transferInt(socialscience_form, socialscienceValue);
+        if (socialscienceValue.equals("1")) {
+            subjects.append("Khoa học xã hội: Lịch sử, Địa lý, GDCD ");
+        }
+        else {
+            String historyValue = MainUtils.setLabel("SELECT history FROM OOP_schema.candidate where personal_id = ?", "history", LoginUtils.tempUserName);
+            if (historyValue.equals("1")) {
+                subjects.append("Lịch sử, ");
+            }
+
+            String geoValue = MainUtils.setLabel("SELECT geography FROM OOP_schema.candidate where personal_id = ?", "geography", LoginUtils.tempUserName);
+            if (geoValue.equals("1")) {
+                subjects.append("Địa lý, ");
+            }
+
+            String gdcdValue = MainUtils.setLabel("SELECT gdcd FROM OOP_schema.candidate where personal_id = ?", "gdcd", LoginUtils.tempUserName);
+            if (gdcdValue.equals("1")) {
+                subjects.append("Vật lý, ");
+            }
+        }
+
         String languageValue = MainUtils.setLabel("SELECT foreign_language FROM OOP_schema.candidate where personal_id = ?", "foreign_language", LoginUtils.tempUserName);
-        MainUtils.transferInt(foreignlanguage_form, languageValue);
-        if (naturalscience_form.isSelected()) {
-            physic_form.setSelected(true);
-            chemistry_form.setSelected(true);
-            bio_form.setSelected(true);
-            history_form.setSelected(false);
-            geography_form.setSelected(false);
-            gdcd_form.setSelected(false);
+        if (languageValue.equals("1")) {
+            subjects.append("Ngoại ngữ, ");
         }
-        if (socialscience_form.isSelected()) {
-            history_form.setSelected(true);
-            geography_form.setSelected(true);
-            gdcd_form.setSelected(true);
-            physic_form.setSelected(false);
-            chemistry_form.setSelected(false);
-            bio_form.setSelected(false);
+
+        if (subjects.length() > 0) {
+            subjects.setLength(subjects.length() - 2);
         }
+
+        subject_textarea.setText(subjects.toString());
     }
     public void showCandidateFields() {
         String gender = MainUtils.setLabel("SELECT gender FROM OOP_schema.candidate where personal_id = ?", "gender", LoginUtils.tempUserName);
@@ -1027,18 +1247,51 @@ public class MainInterface implements Initializable {
         mobile_textfield.setText(mobile_textfield_form.getText());
         email_textfield.setText(email_textfield_form.getText());
         address_textfield.setText(address_textfield_form.getText());
-        thptqg_radiobutton.setSelected(thptqg_radiobutton_form.isSelected());
-        math.setSelected(math_form.isSelected());
-        literature.setSelected(literature_form.isSelected());
-        socialscience.setSelected(socialscience_form.isSelected());
-        naturalscience.setSelected(naturalscience_form.isSelected());
-        foreignlanguage.setSelected(foreignlanguage_form.isSelected());
-        physic.setSelected(physic_form.isSelected());
-        chemistry.setSelected(chemistry_form.isSelected());
-        bio.setSelected(bio_form.isSelected());
-        history.setSelected(history_form.isSelected());
-        geography.setSelected(geography_form.isSelected());
-        gdcd.setSelected(gdcd_form.isSelected());
+        String thptqgValue = MainUtils.setLabel("SELECT thptqg FROM candidate WHERE personal_id = ?", "thptqg", LoginUtils.tempUserName);
+        MainUtils.transferInt(thptqg_radiobutton, thptqgValue);
+        String mathValue = MainUtils.setLabel("SELECT math FROM OOP_schema.candidate where personal_id = ?", "math", LoginUtils.tempUserName);
+        MainUtils.transferInt(math, mathValue);
+        String literatureValue = MainUtils.setLabel("SELECT literature FROM OOP_schema.candidate where personal_id = ?", "literature", LoginUtils.tempUserName);
+        MainUtils.transferInt(literature, literatureValue);
+        String naturalscienceValue = MainUtils.setLabel("SELECT science FROM OOP_schema.candidate where personal_id = ?", "science", LoginUtils.tempUserName);
+        MainUtils.transferInt(naturalscience, naturalscienceValue);
+        String socialscienceValue = MainUtils.setLabel("SELECT social FROM OOP_schema.candidate where personal_id = ?", "social", LoginUtils.tempUserName);
+        MainUtils.transferInt(socialscience, socialscienceValue);
+        String languageValue = MainUtils.setLabel("SELECT foreign_language FROM OOP_schema.candidate where personal_id = ?", "foreign_language", LoginUtils.tempUserName);
+        MainUtils.transferInt(foreignlanguage, languageValue);
+        if (naturalscience.isSelected()) {
+            physic.setSelected(true);
+            chemistry.setSelected(true);
+            bio.setSelected(true);
+            history.setSelected(false);
+            geography.setSelected(false);
+            gdcd.setSelected(false);
+        }
+        if (socialscience.isSelected()) {
+            history.setSelected(true);
+            geography.setSelected(true);
+            gdcd.setSelected(true);
+            physic.setSelected(false);
+            chemistry.setSelected(false);
+            bio.setSelected(false);
+        }
+        String physicValue = MainUtils.setLabel("SELECT physic FROM OOP_schema.candidate where personal_id = ?", "physic", LoginUtils.tempUserName);
+        MainUtils.transferInt(physic, physicValue);
+
+        String chemistryValue = MainUtils.setLabel("SELECT chemistry FROM OOP_schema.candidate where personal_id = ?", "chemistry", LoginUtils.tempUserName);
+        MainUtils.transferInt(chemistry, chemistryValue);
+
+        String bioValue = MainUtils.setLabel("SELECT bio FROM OOP_schema.candidate where personal_id = ?", "bio", LoginUtils.tempUserName);
+        MainUtils.transferInt(bio, bioValue);
+
+        String historyValue = MainUtils.setLabel("SELECT history FROM OOP_schema.candidate where personal_id = ?", "history", LoginUtils.tempUserName);
+        MainUtils.transferInt(history, historyValue);
+
+        String geoValue = MainUtils.setLabel("SELECT geography FROM OOP_schema.candidate where personal_id = ?", "geography", LoginUtils.tempUserName);
+        MainUtils.transferInt(geography, geoValue);
+
+        String gdcdValue = MainUtils.setLabel("SELECT gdcd FROM OOP_schema.candidate where personal_id = ?", "gdcd", LoginUtils.tempUserName);
+        MainUtils.transferInt(gdcd, gdcdValue);
     }
 
     public void changeCandidate() {
@@ -1046,11 +1299,32 @@ public class MainInterface implements Initializable {
         Connection Connect = Database.connectDB();
         try {
             Alert alert;
-            if (name_textfield.getText().isEmpty() || sex.getSelectedToggle() == null || birthdate_textfield.getValue() == null || birthplace_textfield.getText().isEmpty() || nation_textfield.getText().isEmpty() || idnum_textfield.getText().isEmpty() || living_textfield.getText().isEmpty() || highschool_textfield.getText().isEmpty() || mobile_textfield.getText().isEmpty() || !isNumeric(mobile_textfield.getText()) || email_textfield.getText().isEmpty() || address_textfield.getText().isEmpty() ||  edumethod.getSelectedToggle() == null || thptqg_radiobutton.isSelected() == false) {
+            if (name_textfield.getText().isEmpty() || sex.getSelectedToggle() == null || birthdate_textfield.getValue() == null || birthplace_textfield.getText().isEmpty() || nation_textfield.getText().isEmpty() || idnum_textfield.getText().isEmpty() || living_textfield.getText().isEmpty() || highschool_textfield.getText().isEmpty() || mobile_textfield.getText().isEmpty() || email_textfield.getText().isEmpty() || address_textfield.getText().isEmpty() ||  edumethod.getSelectedToggle() == null) {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Hộp thoại báo lỗi");
                 alert.setHeaderText("Lỗi");
                 alert.setContentText("Vui lòng điền tất cả các thông tin bắt buộc!");
+                alert.showAndWait();
+            }
+            else if (!isMobileNum(mobile_textfield.getText())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hộp thoại báo lỗi");
+                alert.setHeaderText("Lỗi");
+                alert.setContentText("Vui lòng nhập đúng định dạng số điện thoại!");
+                alert.showAndWait();
+            }
+            else if (!isValidEmail(email_textfield.getText())) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hộp thoại báo lỗi");
+                alert.setHeaderText("Lỗi");
+                alert.setContentText("Vui lòng nhập đúng định dạng email!");
+                alert.showAndWait();
+            }
+            else if (birthdate_textfield.getValue().getYear() > 2006) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hộp thoại báo lỗi");
+                alert.setHeaderText("Lỗi");
+                alert.setContentText("Vui lòng nhập đúng năm sinh được cho phép!");
                 alert.showAndWait();
             }
             else {
@@ -1093,19 +1367,35 @@ public class MainInterface implements Initializable {
         }
     }
     public void deleteCandidate() {
-        String deleteSQL = "DELETE FROM candidate WHERE personal_id = '" + LoginUtils.tempUserName + "'";
-        Connection connectDB = Database.connectDB();
-        try {
-            prepare = connectDB.prepareStatement(deleteSQL);
-            prepare.executeUpdate();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Hộp thoại thông báo");
-            alert.setHeaderText("Thông báo");
-            alert.setContentText("Xoá thành công!");
+        String dateForm = "2024-05-30 23:59:59";
+        LocalDateTime currentDate = LocalDateTime.now();
+        DateTimeFormatter tempFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime tempDateForm = LocalDateTime.parse(dateForm, tempFormatter);
+        Duration duration3 = Duration.between(currentDate, tempDateForm);
+        long daysBetween3 = duration3.toDays();
+        if (daysBetween3 < 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Hộp thoại báo lỗi");
+            alert.setHeaderText("Lỗi");
+            alert.setContentText("Quá thời hạn thực hiện chức năng!");
             alert.showAndWait();
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+        else {
+            String deleteSQL = "DELETE FROM candidate WHERE personal_id = '" + LoginUtils.tempUserName + "'";
+            Connection connectDB = Database.connectDB();
+            try {
+                prepare = connectDB.prepareStatement(deleteSQL);
+                prepare.executeUpdate();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Hộp thoại thông báo");
+                alert.setHeaderText("Thông báo");
+                alert.setContentText("Xoá thành công!");
+                alert.showAndWait();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+            thptqg_radiobutton_dashboard.setText("");
         }
     }
 
@@ -1130,27 +1420,66 @@ public class MainInterface implements Initializable {
         program_column.setCellValueFactory(new PropertyValueFactory<Request, String>("training_program"));
         request_tableview.setItems(addRequestsList());
     }
-    public void requestAdd() {
-        String insertData = "INSERT INTO request (personal_id, request_order, uni_name, major, training_unit, training_program) VALUES (?, ?, ?, ?, ?, ?)";
+    public int checkNum(){
         Connection connection = Database.connectDB();
-        try {
-            prepare = connection.prepareStatement(insertData);
-            prepare.setString(1, LoginUtils.tempUserName);
-            prepare.setString(2, requestorder_textfield.getText());
-            prepare.setString(3, uni_textfield.getText());
-            prepare.setString(4, majorname_textfield.getText());
-            prepare.setString(5, trainingunit_combobox_fill.getValue());
-            prepare.setString(6, trainingprogram_combobox_fill.getValue());
-            prepare.executeUpdate();
-            Alert alert;
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Hộp thoại thông báo");
-            alert.setHeaderText("Thông báo");
-            alert.setContentText("Lưu thành công!");
-            alert.showAndWait();
-        } catch (SQLException e) {
+        ResultSet reSet=null;
+        PreparedStatement pStatement=null;
+        String checkData="SELECT request_order FROM request";
+        int numOrder = 0;
+        try{
+            pStatement=connection.prepareStatement(checkData);
+            reSet=pStatement.executeQuery();
+            while (reSet.next()){
+                numOrder=reSet.getInt("request_order");
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
+        return numOrder;
+    }
+    public void requestAdd() {
+        int checkN=checkNum();
+        int numText= Integer.parseInt(requestorder_textfield.getText());
+        if(checkN+1 == numText){
+            String insertData = "INSERT INTO request (personal_id, request_order, uni_name, major, training_unit, training_program) VALUES (?, ?, ?, ?, ?, ?)";
+            Connection connection = Database.connectDB();
+            try {
+                prepare = connection.prepareStatement(insertData);
+                prepare.setString(1, LoginUtils.tempUserName);
+                prepare.setString(2, requestorder_textfield.getText());
+                prepare.setString(3, uni_combobox.getValue());
+                prepare.setString(4, majors_combobox.getValue());
+                prepare.setString(5, trainingunit_fill.getText());
+                prepare.setString(6, trainingprogram_combobox_fill.getValue());
+                prepare.executeUpdate();
+                Alert alert;
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Hộp thoại thông báo");
+                alert.setHeaderText("Thông báo");
+                alert.setContentText("Lưu thành công!");
+                alert.showAndWait();
+
+                requestorder_textfield.setText("");
+                uni_combobox.setValue(null);
+                majors_combobox.setValue(null);
+                trainingprogram_combobox_fill.setValue(null);
+                trainingunit_fill.setText("");
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else{
+            Alert alert1;
+            alert1 = new Alert(Alert.AlertType.ERROR);
+            alert1.setTitle("Hộp thoại");
+            alert1.setHeaderText("Lỗi");
+            alert1.setContentText("Vui lòng nhập thứ tự nguyện vọng phù hợp!");
+            alert1.showAndWait();
+
+        }
+
+
     }
 
     public void changeRequest() {
@@ -1160,9 +1489,9 @@ public class MainInterface implements Initializable {
             try {
                 Alert alert;
                 prepare = connectDB.prepareStatement(changeData);
-                prepare.setString(1, uni_textfield.getText());
-                prepare.setString(2, majorname_textfield.getText());
-                prepare.setString(3, trainingunit_combobox_fill.getValue());
+                prepare.setString(1, uni_combobox.getValue());
+                prepare.setString(2, majors_combobox.getValue());
+                prepare.setString(3, trainingunit_fill.getText());
                 prepare.setString(4, trainingprogram_combobox_fill.getValue());
                 prepare.executeUpdate();
                 alert = new Alert(Alert.AlertType.INFORMATION);
@@ -1170,6 +1499,12 @@ public class MainInterface implements Initializable {
                 alert.setHeaderText("Thông báo");
                 alert.setContentText("Sửa thành công!");
                 alert.showAndWait();
+
+                requestorder_textfield.setText("");
+                uni_combobox.setValue(null);
+                majors_combobox.setValue(null);
+                trainingprogram_combobox_fill.setValue(null);
+                trainingunit_fill.setText("");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -1234,9 +1569,9 @@ public class MainInterface implements Initializable {
             String changeData = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + requestorder_textfield.getText();
             try {
                 prepare = connectDB.prepareStatement(changeData);
-                prepare.setString(1, uni_textfield.getText());
-                prepare.setString(2, majorname_textfield.getText());
-                prepare.setString(3, trainingunit_combobox_fill.getValue());
+                prepare.setString(1, uni_combobox.getValue());
+                prepare.setString(2, majors_combobox.getValue());
+                prepare.setString(3, trainingunit_fill.getText());
                 prepare.setString(4, trainingprogram_combobox_fill.getValue());
                 prepare.executeUpdate();
             } catch (SQLException e) {
@@ -1273,7 +1608,7 @@ public class MainInterface implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Hộp thoại báo lỗi");
                 alert.setHeaderText("Lỗi");
-                alert.setContentText("Chưa nhập dữ liệu!");
+                alert.setContentText("Bạn chưa chọn ngành cần xóa");
                 alert.showAndWait();
             }
             else {
@@ -1296,6 +1631,17 @@ public class MainInterface implements Initializable {
                             statement2.setString(1, LoginUtils.tempUserName);
                             statement2.setString(2, num.getText());
                             statement2.executeUpdate();
+
+                            // đoạn code mới thêm dùng cập nhật số khi xóa 1 thành viên trong bảng
+                            String updateOrder = "UPDATE request SET request_order = request_order - 1 " +
+                                    "WHERE personal_id = ? AND request_order > ?";
+                            try (PreparedStatement statement3 = connectDB.prepareStatement(updateOrder)) {
+                                statement3.setString(1, LoginUtils.tempUserName);
+                                statement3.setInt(2, Integer.parseInt(num.getText()));
+                                statement3.executeUpdate();
+                            }
+
+
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Hộp thoại thông báo");
                             alert.setHeaderText("Thông báo");
@@ -1321,6 +1667,7 @@ public class MainInterface implements Initializable {
                                     break;
                                 }
                             }
+                            showRequestInfo();
                         }
                         catch (SQLException e) {
                             e.printStackTrace();
@@ -1331,7 +1678,6 @@ public class MainInterface implements Initializable {
                     e.printStackTrace();
                 }
             }
-            showRequestInfo();
         }
     }
     public void fillFormDashboard() {
@@ -1344,8 +1690,7 @@ public class MainInterface implements Initializable {
             preparedStatement.setString(1, LoginUtils.tempUserName);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                MainUtils.transferInt(thptqg_radiobutton_dashboard, MainUtils.setLabel("SELECT thptqg FROM candidate WHERE personal_id = ?", "thptqg", LoginUtils.tempUserName));
-                method_textfield_dashboard.setText(MainUtils.setLabel("SELECT edumethod FROM candidate WHERE personal_id = ?", "edumethod", LoginUtils.tempUserName));
+                MainUtils.transferInttoString(MainUtils.setLabel("SELECT thptqg FROM candidate WHERE personal_id = ?", "thptqg", LoginUtils.tempUserName), thptqg_radiobutton_dashboard);
                 String free = MainUtils.setLabel("SELECT freecandidate FROM candidate WHERE personal_id = ?", "freecandidate", LoginUtils.tempUserName);
                 if (free.equals("NULL")) {
                     free_textfield_dashboard.setText("Không có");
@@ -1353,7 +1698,16 @@ public class MainInterface implements Initializable {
                 else {
                     free_textfield_dashboard.setText(free);
                 }
-                subject_field_dashboard.setText(MainUtils.countSubject("SELECT SUM(CASE WHEN math=1 THEN 1 ELSE 0 END +\n" + "CASE WHEN literature=1 THEN 1 ELSE 0 END +\n" + "CASE WHEN science=1 THEN 3 ELSE 0 END +\n" + "CASE WHEN social=1 THEN 3 ELSE 0 END +\n" + "CASE WHEN foreign_language=1 THEN 1 ELSE 0 END\n" + ") AS total FROM candidate WHERE personal_id ='" + LoginUtils.tempUserName + "'", "total"));
+                subject_field_dashboard.setText(MainUtils.countSubject("SELECT SUM(CASE WHEN math=1 THEN 1 ELSE 0 END +\n" +
+                        "CASE WHEN literature=1 THEN 1 ELSE 0 END +\n" +
+                        "CASE WHEN history=1 THEN 1 ELSE 0 END +\n" +
+                        "CASE WHEN geography=1 THEN 1 ELSE 0 END +\n" +
+                        "CASE WHEN gdcd=1 THEN 1 ELSE 0 END +\n" +
+                        "CASE WHEN bio=1 THEN 1 ELSE 0 END +\n" +
+                        "CASE WHEN physic=1 THEN 1 ELSE 0 END +\n" +
+                        "CASE WHEN chemistry=1 THEN 1 ELSE 0 END +\n" +
+                        "CASE WHEN foreign_language=1 THEN 1 ELSE 0 END\n" +
+                        ") AS total FROM candidate WHERE personal_id ='" + LoginUtils.tempUserName + "'", "total"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1372,14 +1726,28 @@ public class MainInterface implements Initializable {
                 idnum_dashboard_textfield.setText(MainUtils.setLabel("SELECT candidateid FROM testinfo WHERE personal_id = ?", "candidateid", LoginUtils.tempUserName));
                 testvenue_dashboard.setText(MainUtils.setLabel("SELECT testvenue FROM testinfo WHERE personal_id = ?", "testvenue", LoginUtils.tempUserName));
                 tempDate = MainUtils.setLabel("SELECT checkintime FROM testinfo WHERE personal_id = ?", "checkintime", LoginUtils.tempUserName);
-                checkintime_dashboard.setText(tempDate);
+                if (tempDate != null) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    LocalDateTime dateTime = LocalDateTime.parse(tempDate, formatter);
+                    DateTimeFormatter newFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                    String formattedString = dateTime.format(newFormatter);
+                    checkintime_dashboard.setText(formattedString);
+                }
                 room_dashboard.setText(MainUtils.setLabel("SELECT testroom FROM testinfo WHERE personal_id = ?", "testroom", LoginUtils.tempUserName));
                 LocalDateTime currentDate = LocalDateTime.now();
                 DateTimeFormatter tempFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime tempDateTime = LocalDateTime.parse(tempDate, tempFormatter);
                 Duration duration = Duration.between(currentDate, tempDateTime);
                 long daysBetween = duration.toDays();
-                countdown_timer.setText(String.valueOf(daysBetween));
+                if (daysBetween > 0) {
+                    countdown_timer.setText("Còn " + String.valueOf(daysBetween) + " ngày");
+                }
+                else if (daysBetween == 0) {
+                    countdown_timer.setText("Đến ngày dự thi");
+                }
+                else {
+                    countdown_timer.setText("Đã qua ngày thi");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1460,33 +1828,302 @@ public class MainInterface implements Initializable {
             e.printStackTrace();
         }
     }
+
+    private boolean compareWithLabel(Label label, String data) {
+        if (label.getText().isEmpty()) {
+            return false;
+        }
+        double labelValue = Double.parseDouble(label.getText());
+        double dataValue = Double.parseDouble(data);
+
+        return labelValue > dataValue;
+    }
+    public void compareDataWithLabels() {
+        String deleteQuery = "DELETE FROM accepteduni WHERE personal_id = ?";
+        try (Connection connection = Database.connectDB();
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
+            deleteStatement.setString(1, LoginUtils.tempUserName);
+            deleteStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String selectedUniversity = null;
+        String selectedMajor = null;
+        String selectedTrainingUnit = null;
+        String selectedTraningProgram = null;
+
+        String queryRequest = "SELECT uni_name, major, training_unit, training_program FROM request WHERE personal_id = ?";
+
+        try (Connection connection = Database.connectDB()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(queryRequest);
+            preparedStatement.setString(1, LoginUtils.tempUserName);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) { // Move to the first row
+                selectedUniversity = resultSet.getString("uni_name");
+                selectedMajor = resultSet.getString("major");
+                selectedTrainingUnit = resultSet.getString("training_unit");
+                selectedTraningProgram = resultSet.getString("training_program");
+
+                String queryUniInfo = "SELECT a00, a01, b00, c00, d00, d07 FROM uniinfo WHERE name = ? AND major = ? AND training_program = ?";
+                PreparedStatement preparedStatement1 = connection.prepareStatement(queryUniInfo);
+                preparedStatement1.setString(1, selectedUniversity);
+                preparedStatement1.setString(2, selectedMajor);
+                preparedStatement1.setString(3, selectedTraningProgram);
+                ResultSet resultSet1 = preparedStatement1.executeQuery();
+                if (resultSet1.next()) {
+                    boolean isAccepted = false;
+                    if (resultSet1.getDouble("a00") != 0 && compareWithLabel(a001, resultSet1.getString("a00"))) {
+                        isAccepted = true;
+                    }
+                    if (resultSet1.getDouble("a01") != 0 && compareWithLabel(a011, resultSet1.getString("a01"))) {
+                        isAccepted = true;
+                    }
+                    if (resultSet1.getDouble("b00") != 0 && compareWithLabel(b001, resultSet1.getString("b00"))) {
+                        isAccepted = true;
+                    }
+                    if (resultSet1.getDouble("c00") != 0 && compareWithLabel(c001, resultSet1.getString("c00"))) {
+                        isAccepted = true;
+                    }
+                    if (resultSet1.getDouble("d00") != 0 && compareWithLabel(d001, resultSet1.getString("d00"))) {
+                        isAccepted = true;
+                    }
+                    if (resultSet1.getDouble("d07") != 0 && compareWithLabel(d071, resultSet1.getString("d07"))) {
+                        isAccepted = true;
+                    }
+                    if (isAccepted) { // Check if accepted before inserting
+                        String check = "SELECT * FROM accepteduni WHERE personal_id = ? AND name = ? AND major = ? AND training_program = ?";
+                        try (PreparedStatement preparedStatement2 = connection.prepareStatement(check)) {
+                            preparedStatement2.setString(1, LoginUtils.tempUserName);
+                            preparedStatement2.setString(2, selectedUniversity);
+                            preparedStatement2.setString(3, selectedMajor);
+                            preparedStatement2.setString(4, selectedTraningProgram);
+
+                            ResultSet checkResult = preparedStatement2.executeQuery();
+                            if (!checkResult.next()) {
+                                if (!thptqg_radiobutton_dashboard.getText().equals("Không")) {
+                                    if (!free_textfield_dashboard.getText().equals("Đã tốt nghiệp THPT") && Double.parseDouble(math_score1.getText()) > 1 && Double.parseDouble(literature_score1.getText()) > 1 && Double.parseDouble(foreignlanguage_score1.getText()) > 1) {
+                                        if (!physic_score1.getText().equals("X") && !chemistry_score1.getText().equals("X") && !bio_score1.getText().equals("X")) {
+                                            if (Double.parseDouble(physic_score1.getText()) > 1 && Double.parseDouble(chemistry_score1.getText()) > 1 && Double.parseDouble(bio_score1.getText()) > 1) {
+                                                String insertQuery = "INSERT INTO accepteduni (personal_id, name, major, training_unit, training_program, status) VALUES (?, ?, ?, ?, ?, ?)";
+                                                try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                                                    insertStatement.setString(1, LoginUtils.tempUserName);
+                                                    insertStatement.setString(2, selectedUniversity);
+                                                    insertStatement.setString(3, selectedMajor);
+                                                    insertStatement.setString(4, selectedTrainingUnit);
+                                                    insertStatement.setString(5, selectedTraningProgram);
+                                                    insertStatement.setString(6, "Trúng tuyển");
+                                                    insertStatement.executeUpdate();
+                                                } catch (SQLException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                break;
+                                            }
+                                            else {
+                                                String insertQuery = "INSERT INTO accepteduni (personal_id, name, major, training_unit, training_program, status) VALUES (?, ?, ?, ?, ?, ?)";
+                                                try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                                                    insertStatement.setString(1, LoginUtils.tempUserName);
+                                                    insertStatement.setString(2, selectedUniversity);
+                                                    insertStatement.setString(3, selectedMajor);
+                                                    insertStatement.setString(4, selectedTrainingUnit);
+                                                    insertStatement.setString(5, selectedTraningProgram);
+                                                    insertStatement.setString(6, "Không trúng tuyển");
+                                                    insertStatement.executeUpdate();
+                                                } catch (SQLException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        else {
+                                            if (Double.parseDouble(history_score1.getText()) > 1 && Double.parseDouble(geography_score1.getText()) > 1 && Double.parseDouble(gdcd_score1.getText()) > 1) {
+                                                String insertQuery = "INSERT INTO accepteduni (personal_id, name, major, training_unit, training_program, status) VALUES (?, ?, ?, ?, ?, ?)";
+                                                try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                                                    insertStatement.setString(1, LoginUtils.tempUserName);
+                                                    insertStatement.setString(2, selectedUniversity);
+                                                    insertStatement.setString(3, selectedMajor);
+                                                    insertStatement.setString(4, selectedTrainingUnit);
+                                                    insertStatement.setString(5, selectedTraningProgram);
+                                                    insertStatement.setString(6, "Trúng tuyển");
+                                                    insertStatement.executeUpdate();
+                                                } catch (SQLException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                break;
+                                            }
+                                            else {
+                                                String insertQuery = "INSERT INTO accepteduni (personal_id, name, major, training_unit, training_program, status) VALUES (?, ?, ?, ?, ?, ?)";
+                                                try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                                                    insertStatement.setString(1, LoginUtils.tempUserName);
+                                                    insertStatement.setString(2, selectedUniversity);
+                                                    insertStatement.setString(3, selectedMajor);
+                                                    insertStatement.setString(4, selectedTrainingUnit);
+                                                    insertStatement.setString(5, selectedTraningProgram);
+                                                    insertStatement.setString(6, "Không trúng tuyển");
+                                                    insertStatement.executeUpdate();
+                                                } catch (SQLException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                break;
+                                            }
+                                        }
+                                    }
+                                else {
+                                        String insertQuery = "INSERT INTO accepteduni (personal_id, name, major, training_unit, training_program, status) VALUES (?, ?, ?, ?, ?, ?)";
+                                        try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                                            insertStatement.setString(1, LoginUtils.tempUserName);
+                                            insertStatement.setString(2, selectedUniversity);
+                                            insertStatement.setString(3, selectedMajor);
+                                            insertStatement.setString(4, selectedTrainingUnit);
+                                            insertStatement.setString(5, selectedTraningProgram);
+                                            insertStatement.setString(6, "Trúng tuyển");
+                                            insertStatement.executeUpdate();
+                                        } catch (SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public ObservableList<StatusInfo> addStatusList() {
+        ObservableList<StatusInfo> status_list = FXCollections.observableArrayList();
+        String receiver = "SELECT * FROM accepteduni WHERE personal_id = '" + LoginUtils.tempUserName + "'";
+        Connection connection = Database.connectDB();
+        try {
+            StatusInfo statusInfo;
+            prepare = connection.prepareStatement(receiver);
+            result = prepare.executeQuery();
+            while (result.next()) {
+                statusInfo = new StatusInfo(result.getNString("name"), result.getNString("major"), result.getNString("training_unit"), result.getNString("training_program"), result.getNString("status"));
+                status_list.add(statusInfo);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return status_list;
+    }
+    public void showScoreInfo() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = Database.connectDB();
+            preparedStatement = connection.prepareStatement("SELECT * from score WHERE personal_id = ?");
+            preparedStatement.setString(1, LoginUtils.tempUserName);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                MainUtils.getScore("math", math_score1);
+                MainUtils.getScore("literature", literature_score1);
+                MainUtils.getScore("foreignlanguage", foreignlanguage_score1);
+                MainUtils.getScienceScore("physic", physic_score1);
+                MainUtils.getScienceScore("history", history_score1);
+                MainUtils.setVisibleScoreLabel(physic_score1, history_score1, physic_scorepane1, history_scorepane1);
+                MainUtils.getScienceScore("chemistry", chemistry_score1);
+                MainUtils.getScienceScore("geography", geography_score1);
+                MainUtils.setVisibleScoreLabel(chemistry_score1, geography_score1, chemistry_scorepane1, geography_scorepane1);
+                MainUtils.getScienceScore("bio", bio_score1);
+                MainUtils.getScienceScore("gdcd", gdcd_score1);
+                MainUtils.setVisibleScoreLabel(bio_score1, gdcd_score1, bio_scorepane1, gdcd_scorepane1);
+                MainUtils.calculateScore(math_score1, physic_score1, chemistry_score1, a001);
+                MainUtils.calculateScore(math_score1, physic_score1, foreignlanguage_score1, a011);
+                MainUtils.calculateScore(math_score1, chemistry_score1, bio_score1, b001);
+                MainUtils.calculateScore(math_score1, bio_score1, foreignlanguage_score1, b081);
+                MainUtils.calculateScore(literature_score1, history_score1, geography_score1, c001);
+                MainUtils.calculateScore(literature_score1, history_score1, gdcd_score1, c191);
+                MainUtils.calculateScore(math_score1, literature_score1, foreignlanguage_score1, d001);
+                MainUtils.calculateScore(math_score1, chemistry_score1, foreignlanguage_score1, d071);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void showStatusInfo() {
+        statusinfo_uni_column.setCellValueFactory(new PropertyValueFactory<StatusInfo, String>("university"));
+        statusinfo_major_column.setCellValueFactory(new PropertyValueFactory<StatusInfo, String>("major"));
+        statusinfo_unit_column.setCellValueFactory(new PropertyValueFactory<StatusInfo, String>("trainingUnit"));
+        statusinfo_program_column.setCellValueFactory(new PropertyValueFactory<StatusInfo, String>("trainingProgram"));
+        statusinfo_acceptedornot_column.setCellValueFactory(new PropertyValueFactory<StatusInfo, String>("status"));
+        statusinfo_tableview.setItems(addStatusList());
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        showRequestInfo();
         String nameLabel = MainUtils.setLabel("SELECT user_name FROM OOP_schema.users where username = ?", "user_name", LoginUtils.tempUserName);
         name_label.setText(nameLabel);
+        name_label2.setText(nameLabel);
         tempName = nameLabel;
         idnum_label.setText(LoginUtils.tempUserName);
-        profile_button.setText(nameLabel);
         name_textfield.setText(nameLabel);
         name_textfield.setEditable(false);
         idnum_textfield.setEditable(false);
         idnum_textfield.setText(LoginUtils.tempUserName);
-        trainingunit_combobox_fill.setItems(traningunit_list);
         trainingprogram_combobox_fill.setItems(trainingprogram_list);
+        showScoreInfo();
+        uni_combobox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                if (newValue.contains("Đại học")) {
+                    trainingunit_fill.setText("Đại học");
+                } else if (newValue.contains("Cao đẳng")) {
+                    trainingunit_fill.setText("Cao đẳng");
+                }
+            }
+        });
+        uni_combobox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                uni_combobox.setItems(nameSchool_list);
+                // đưa danh sách các trường vào ci uni_combobox
+                if (uni_combobox != null) {
+                    uni_combobox.valueProperty().addListener((observable, oldValue, newValue) -> {
+                        if (newValue != null) {
+                            ObservableList<String> nameMajors_list = FXCollections.observableArrayList(listNameMajors(newValue));
+                            majors_combobox.setItems(nameMajors_list);
+                        } else {
+                            majors_combobox.setItems(FXCollections.observableArrayList());
+                        }
+                    });
+                }
+                property.set(property.get() + 1);
+                // kiểm tra nếu uni_combobox đã được chọn thì sẽ thực hiện cái listener thực hiện đưa danh sách các ngành vào
+            }
+        });
         fillFormDashboard();
         fillTestDashboard();
         fillRequestDashboard();
         fillScoreDashboard();
+        checkPaneltoShow();
+        changepass_item.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                MainUtils.changeStage(event, "Đổi mã đăng nhập - Hệ thống quản lí thi tốt nghiệp THPTQG", "changepass-view.fxml",600,400);
+            }
+        });
+
         home_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 dashboard_panel.setVisible(true);
                 form_stackpanel.setVisible(false);
                 testinfo_panel.setVisible(false);
-                score_panel.setVisible(false);
+                score_anchorpane.setVisible(false);
                 request_panel.setVisible(false);
+                statusinfo_panel.setVisible(false);
                 fillFormDashboard();
                 fillRequestDashboard();
+                checkPaneltoShow();
             }
         });
         home_button.setOnMouseClicked(mouseEvent -> {
@@ -1512,8 +2149,9 @@ public class MainInterface implements Initializable {
                         change_button.setVisible(true);
                         fillform_panel.setVisible(false);
                         testinfo_panel.setVisible(false);
-                        score_panel.setVisible(false);
+                        score_anchorpane.setVisible(false);
                         request_panel.setVisible(false);
+                        statusinfo_panel.setVisible(false);
                     }
                     else {
                         dashboard_panel.setVisible(false);
@@ -1523,8 +2161,9 @@ public class MainInterface implements Initializable {
                         change_button.setVisible(false);
                         showform_panel.setVisible(false);
                         testinfo_panel.setVisible(false);
-                        score_panel.setVisible(false);
+                        score_anchorpane.setVisible(false);
                         request_panel.setVisible(false);
+                        statusinfo_panel.setVisible(false);
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -1543,8 +2182,9 @@ public class MainInterface implements Initializable {
                 dashboard_panel.setVisible(false);
                 form_stackpanel.setVisible(false);
                 testinfo_panel.setVisible(false);
-                score_panel.setVisible(false);
+                score_anchorpane.setVisible(false);
                 request_panel.setVisible(true);
+                statusinfo_panel.setVisible(false);
                 showRequestInfo();
             }
         });
@@ -1574,38 +2214,39 @@ public class MainInterface implements Initializable {
             option_line.setVisible(false);
             request_line.setVisible(true);
         });
-        changepass_item.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                MainUtils.changeStage(event, "Đổi mã đăng nhập - Hệ thống quản lí thi tốt nghiệp THPTQG", "changepass-view.fxml",600,400);
-            }
-        });
+
         logout_item.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                ContextMenu contextMenu = logout_item.getParentPopup();
-                Stage stage = (Stage) contextMenu.getOwnerWindow();
-                FXMLLoader fxmlLoader;
-                fxmlLoader = new FXMLLoader(ChangePassword.class.getResource("login-view.fxml"));
-                Scene scene = null;
                 try {
-                    scene = new Scene(fxmlLoader.load(),900,700);
-                }
-                catch (IOException e) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Xác nhận thoát");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Bạn có chắc chắn muốn thoát không?");
+                    Optional<ButtonType> option = alert.showAndWait();
+
+                    if (option.isPresent() && option.get() == ButtonType.OK) {
+
+                        logout_item.getScene().getWindow().hide();
+                        Parent root = FXMLLoader.load(getClass().getResource("login-view.fxml"));
+                        Stage stage = new Stage();
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                stage.setScene(scene);
-                stage.setTitle("Đăng nhập - Hệ thống quản lí thi tốt nghiệp THPTQG");
-                stage.setResizable(false);
-                stage.show();
             }
         });
+
         EventHandler<ActionEvent> action1 = event -> {
             dashboard_panel.setVisible(false);
             form_stackpanel.setVisible(false);
             testinfo_panel.setVisible(true);
-            score_panel.setVisible(false);
+            score_anchorpane.setVisible(false);
             request_panel.setVisible(false);
+            statusinfo_panel.setVisible(false);
             idnum_testinfo_textfield.setText(MainUtils.setLabel("SELECT candidateid FROM OOP_schema.testinfo WHERE personal_id = ?","candidateid",LoginUtils.tempUserName));
             testvenue.setText(MainUtils.setLabel("SELECT testvenue FROM OOP_schema.testinfo WHERE personal_id = ?","testvenue",LoginUtils.tempUserName));
             room.setText(MainUtils.setLabel("SELECT testroom FROM OOP_schema.testinfo WHERE personal_id = ?","testroom",LoginUtils.tempUserName));
@@ -1631,41 +2272,10 @@ public class MainInterface implements Initializable {
             dashboard_panel.setVisible(false);
             form_stackpanel.setVisible(false);
             testinfo_panel.setVisible(false);
-            score_panel.setVisible(true);
+            score_anchorpane.setVisible(true);
             request_panel.setVisible(false);
-            Connection connection = null;
-            PreparedStatement preparedStatement = null;
-            ResultSet resultSet = null;
-            try {
-                connection = Database.connectDB();
-                preparedStatement = connection.prepareStatement("SELECT * from score WHERE personal_id = ?");
-                preparedStatement.setString(1, LoginUtils.tempUserName);
-                resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
-                    MainUtils.getScore("math", math_score);
-                    MainUtils.getScore("literature", literature_score);
-                    MainUtils.getScore("foreignlanguage", foreignlanguage_score);
-                    MainUtils.getScienceScore("physic", physic_score);
-                    MainUtils.getScienceScore("history", history_score);
-                    MainUtils.setVisibleScoreLabel(physic_score, history_score, physic_scorepane, history_scorepane);
-                    MainUtils.getScienceScore("chemistry", chemistry_score);
-                    MainUtils.getScienceScore("geography", geography_score);
-                    MainUtils.setVisibleScoreLabel(chemistry_score, geography_score, chemistry_scorepane, geography_scorepane);
-                    MainUtils.getScienceScore("bio", bio_score);
-                    MainUtils.getScienceScore("gdcd", gdcd_score);
-                    MainUtils.setVisibleScoreLabel(bio_score, gdcd_score, bio_scorepane, gdcd_scorepane);
-                    MainUtils.calculateScore(math_score, physic_score, chemistry_score, a00);
-                    MainUtils.calculateScore(math_score, physic_score, foreignlanguage_score, a01);
-                    MainUtils.calculateScore(math_score, chemistry_score, bio_score, b00);
-                    MainUtils.calculateScore(math_score, bio_score, foreignlanguage_score, b08);
-                    MainUtils.calculateScore(literature_score, history_score, geography_score, c00);
-                    MainUtils.calculateScore(literature_score, history_score, gdcd_score, c19);
-                    MainUtils.calculateScore(math_score, literature_score, foreignlanguage_score, d00);
-                    MainUtils.calculateScore(math_score, chemistry_score, foreignlanguage_score, d07);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            statusinfo_panel.setVisible(false);
+
         };
         score_item.setOnAction(action2);
         score_dashboard_viewbutton.setOnAction(action2);
@@ -1675,6 +2285,18 @@ public class MainInterface implements Initializable {
             option_line.setVisible(true);
             request_line.setVisible(false);
         });
+        EventHandler<ActionEvent> action3 = event -> {
+            dashboard_panel.setVisible(false);
+            form_stackpanel.setVisible(false);
+            testinfo_panel.setVisible(false);
+            score_anchorpane.setVisible(false);
+            request_panel.setVisible(false);
+            statusinfo_panel.setVisible(true);
+            addStatusList().clear();
+            compareDataWithLabels();
+            showStatusInfo();
+        };
+        statusinfo_item.setOnAction(action3);
         save_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -1685,6 +2307,10 @@ public class MainInterface implements Initializable {
                     result = statement.executeQuery(checkAvailable);
                     if (result.next()) {
                         changeCandidate();
+                        delete_button.setVisible(true);
+                        change_button.setVisible(true);
+                        showform_panel.setVisible(true);
+                        fillform_panel.setVisible(false);
                     }
                     else {
                         candidateAdd();
@@ -1721,17 +2347,30 @@ public class MainInterface implements Initializable {
         change_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                showform_panel.setVisible(false);
-                fillform_panel.setVisible(true);
-                showCandidateFields();
+                String dateForm = "2024-05-30 23:59:59";
+                LocalDateTime currentDate = LocalDateTime.now();
+                DateTimeFormatter tempFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime tempDateForm = LocalDateTime.parse(dateForm, tempFormatter);
+                Duration duration3 = Duration.between(currentDate, tempDateForm);
+                long daysBetween3 = duration3.toDays();
+                if (daysBetween3 < 0) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Hộp thoại báo lỗi");
+                    alert.setHeaderText("Lỗi");
+                    alert.setContentText("Quá thời hạn thực hiện chức năng!");
+                    alert.showAndWait();
+                }
+                else {
+                    fillform_panel.setVisible(true);
+                    showform_panel.setVisible(false);
+                    showCandidateFields();
+                }
             }
         });
         delete_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 deleteCandidate();
-                thptqg_radiobutton_dashboard.setSelected(false);
-                method_textfield_dashboard.setText("");
                 free_textfield_dashboard.setText("");
                 subject_field_dashboard.setText("");
             }
@@ -1767,7 +2406,7 @@ public class MainInterface implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Alert alert;
-                if (requestorder_textfield.getText().isEmpty() || uni_textfield.getText().isEmpty() || majorname_textfield.getText().isEmpty() || trainingunit_combobox_fill.getValue() == null || trainingprogram_combobox_fill.getValue() == null) {
+                if (requestorder_textfield.getText().isEmpty() || uni_combobox.getValue()== null || majors_combobox.getValue()==null || trainingprogram_combobox_fill.getValue() == null) {
                     alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Hộp thoại báo lỗi");
                     alert.setHeaderText("Lỗi");
@@ -1799,7 +2438,15 @@ public class MainInterface implements Initializable {
                                         alert1.setContentText("Đã có nguyện vọng tương tự được thêm vào!");
                                         alert1.showAndWait();
                                     } else if (option.get() == ButtonType.OK) {
-                                        changeRequest();
+                                        if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
+                                            changeRequest();
+                                        } else {
+                                            alert1 = new Alert(Alert.AlertType.ERROR);
+                                            alert1.setTitle("Hộp thoại báo lỗi");
+                                            alert1.setHeaderText("Lỗi");
+                                            alert1.setContentText("Thông tin không trùng khớp với cơ sở dữ liệu!");
+                                            alert1.showAndWait();
+                                        }
                                     } else if (option.get() == ButtonType.CANCEL) {
                                         alert1 = new Alert(Alert.AlertType.ERROR);
                                         alert1.setTitle("Hộp thoại báo lỗi");
@@ -1808,14 +2455,22 @@ public class MainInterface implements Initializable {
                                         alert1.showAndWait();
                                     }
                                 } else {
-                                    requestAdd();
+                                    if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
+                                        requestAdd();
+                                    } else {
+                                        alert1 = new Alert(Alert.AlertType.ERROR);
+                                        alert1.setTitle("Hộp thoại báo lỗi");
+                                        alert1.setHeaderText("Lỗi");
+                                        alert1.setContentText("Thông tin không trùng khớp với cơ sở dữ liệu!");
+                                        alert1.showAndWait();
+                                    }
                                 }
                             } else {
                                 String checkAvailable = "SELECT * FROM OOP_schema.request WHERE uni_name = ? AND major = ? AND training_unit = ? AND training_program = ?";
                                 try (PreparedStatement statement1 = connection.prepareStatement(checkAvailable)) {
-                                    statement1.setString(1, uni_textfield.getText());
-                                    statement1.setString(2, majorname_textfield.getText());
-                                    statement1.setString(3, trainingunit_combobox_fill.getValue());
+                                    statement1.setString(1, uni_combobox.getValue());
+                                    statement1.setString(2, majors_combobox.getValue());
+                                    statement1.setString(3, trainingunit_fill.getText());
                                     statement1.setString(4, trainingprogram_combobox_fill.getValue());
                                     ResultSet resultSet = statement1.executeQuery();
                                     if (resultSet.next()) {
@@ -1825,7 +2480,15 @@ public class MainInterface implements Initializable {
                                         alert1.setContentText("Đã có nguyện vọng tương tự được thêm vào!");
                                         alert1.showAndWait();
                                     } else {
-                                        requestAdd();
+                                        if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
+                                            requestAdd();
+                                        } else {
+                                            alert1 = new Alert(Alert.AlertType.ERROR);
+                                            alert1.setTitle("Hộp thoại báo lỗi");
+                                            alert1.setHeaderText("Lỗi");
+                                            alert1.setContentText("Thông tin không trùng khớp với cơ sở dữ liệu!");
+                                            alert1.showAndWait();
+                                        }
                                     }
                                 } catch (SQLException e) {
                                     e.printStackTrace();
@@ -1882,7 +2545,7 @@ public class MainInterface implements Initializable {
                                         prepare1.setString(2, num.getText());
                                         try (ResultSet result1 = prepare1.executeQuery()) {
                                             if (result1.next()) {
-                                                uni_textfield.setText(result1.getNString("uni_name"));
+                                                uni_combobox.setValue(result1.getNString("uni_name"));
                                             }
                                         }
                                     } catch (SQLException e) {
@@ -1894,7 +2557,7 @@ public class MainInterface implements Initializable {
                                         prepare2.setString(2, num.getText());
                                         try (ResultSet result2 = prepare2.executeQuery()) {
                                             if (result2.next()) {
-                                                majorname_textfield.setText(result2.getNString("major"));
+                                                majors_combobox.setValue(result2.getNString("major"));
                                             }
                                         }
                                     } catch (SQLException e) {
@@ -1906,7 +2569,7 @@ public class MainInterface implements Initializable {
                                         prepare3.setString(2, num.getText());
                                         try (ResultSet result3 = prepare3.executeQuery()) {
                                             if (result3.next()) {
-                                                trainingunit_combobox_fill.setValue(result3.getNString("training_unit"));
+                                                trainingunit_fill.setText((result3.getNString("training_unit")));
                                             }
                                         }
                                     } catch (SQLException e) {
@@ -1939,6 +2602,89 @@ public class MainInterface implements Initializable {
                         }
                     }
                 }
+            }
+        });
+        printform_button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(name_textfield_form.getText()==null ||
+                        birthdate_textfield_form.getText()==null ||
+                        nation_textfield_form.getText()==null ||
+                        birthplace_textfield1.getText()==null
+                ){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Hộp thoại báo lỗi");
+                    alert.setHeaderText("Lỗi");
+                    alert.setContentText("Chưa có dữ liệu để xuất!");
+                    alert.showAndWait();
+                }
+                else {
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
+                    String nameClear=editText(nameLabel) ;
+                    fileChooser.setInitialFileName(nameClear+".pdf");
+
+                    File file=fileChooser.showSaveDialog(new Stage());
+
+                    if(file != null){
+                        PdfWriter writer = null;
+                        try {
+                            writer = new PdfWriter(file.getAbsolutePath());
+                            // Tạo PdfDocument
+                            PdfDocument pdfDoc = new PdfDocument(writer);
+                            // Tạo Document
+                            Document document = new Document(pdfDoc);
+                            if (getOsName().startsWith("Windows")) {
+                                document.setFont(PdfFontFactory.createFont("C:\\Windows\\Fonts\\arial.ttf"));
+                            }
+                            else if (getOsName().startsWith("Mac")) {
+                                document.setFont(PdfFontFactory.createFont("/System/Library/Fonts/Supplemental/Arial.ttf"));
+                            }
+                            else {
+                                document.setFont(PdfFontFactory.createFont("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"));
+                            }
+
+                            // Thêm tiêu đề
+                            document.add(new Paragraph("Giấy đăng ký dự thi").setBold().setFontSize(24)
+                                    .setMarginBottom(5).setTextAlignment(TextAlignment.CENTER));
+
+                            // Thêm thông tin học sinh
+                            document.add(new Paragraph("A.Thông tin cá nhân").setFontSize(17).setBold());
+                            document.add(new Paragraph("Họ và tên: "+name_textfield_form.getText()));
+                            document.add(new Paragraph("Ngày sinh: "+birthdate_textfield_form.getText()+"                                   Giới tính: "+gender_textfield_form.getText()));
+                            document.add(new Paragraph("Dân tộc: "+nation_textfield_form.getText()+"                                                  Số CCCD/CMND: "+idnum_textfield.getText()));
+                            document.add(new Paragraph("Nơi sinh: "+birthplace_textfield1.getText()));
+                            document.add(new Paragraph("Nơi thường trú: "+living_textfield_form.getText()));
+                            document.add(new Paragraph("Trường học hiện tại: "+highschool_textfield_form.getText()));
+                            document.add(new Paragraph("Số điện thoại: "+mobile_textfield_form.getText()+"                                    Email: "+email_textfield.getText()));
+                            document.add(new Paragraph("Địa chỉ liên hệ: "+address_textfield_form.getText()));
+
+                            document.add(new Paragraph("B.Thông tin đăng ký").setFontSize(17).setBold());
+                            String thpt="Không";
+                            if(thptqg_radiobutton_form.getText().equals("Có")){
+                                thpt="Có";
+                            }
+                            document.add(new Paragraph("Sử dụng kết quả thi THPT để xét tuyển ĐH, CĐ"+thpt));
+                            document.add(new Paragraph("Hình thức giáo dục phổ thông: "+method_textfield_form.getText()));
+                            document.add(new Paragraph("Thí sinh tự do: "+free_textfield_form.getText()));
+
+
+                            document.add(new Paragraph("Tổ hợp môn thi: "+subject_textarea.getText()));
+
+                            document.add(new Paragraph("Thí sinh ký tên").setTextAlignment(TextAlignment.RIGHT).setMarginRight(52));
+                            document.add(new Paragraph(""));
+                            document.add(new Paragraph(""));
+                            document.add(new Paragraph(""));
+                            document.add(new Paragraph(nameLabel).setTextAlignment(TextAlignment.RIGHT).setMarginRight(50));
+
+                            // Đóng tài liệu
+                            document.close();
+                        }catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+
             }
         });
     }

@@ -7,7 +7,7 @@ public class Database {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/OOP_schema", "root", "viethung2909");
+                    "jdbc:mysql://127.0.0.1:3306/oop_schema", "root", "viethung2909");
         }
         catch (SQLException e) {
             e.printStackTrace();

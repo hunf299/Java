@@ -4,22 +4,21 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javalasttermproject.javalasttermproject.Controller.ChangePassword;
-import javalasttermproject.javalasttermproject.Controller.Login;
+import javalasttermproject.javalasttermproject.Model.ConnectGmail;
 import javalasttermproject.javalasttermproject.Model.Database;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+import java.util.Random;
 
 
 public class LoginUtils {
@@ -78,6 +77,7 @@ public class LoginUtils {
             e.printStackTrace();
         }
     }
+
 
     public static void changePass_Login(ActionEvent event, String id, String newPass, String newPass2, Button button1, Button button2, AnchorPane panel1, AnchorPane panel2, StackPane panel3, Label label1, Label label2) {
         Connection connection = null;
@@ -142,7 +142,7 @@ public class LoginUtils {
 
             slider.setOnFinished((ActionEvent e) -> {
                 panel3.setVisible(true);
-                panel2.setVisible(false);
+                panel2.setVisible(true);
                 button1.setVisible(false);
                 button2.setVisible(true);
                 label1.setVisible(true);
@@ -156,15 +156,90 @@ public class LoginUtils {
             slider.setDuration(Duration.seconds(.5));
 
             slider.setOnFinished((ActionEvent e) -> {
-                panel3.setVisible(false);
+                panel3.setVisible(true);
                 panel2.setVisible(true);
                 button1.setVisible(true);
                 button2.setVisible(false);
                 label1.setVisible(false);
                 label2.setVisible(true);
             });
-
             slider.play();
+        }
+    }
+    public static void forgotPass(String cccd, AnchorPane panel1, AnchorPane panel2){
+        final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        final int length = 10;
+        if(!cccd.isBlank()){
+            Connection connection ;
+            String email = null;
+            try {
+                connection = Database.connectDB();
+                String sqlCheck = "SELECT email FROM users WHERE username = ?";
+                PreparedStatement prepCheck = connection.prepareStatement(sqlCheck);
+                prepCheck.setString(1, cccd);
+                ResultSet resultCheck = prepCheck.executeQuery();
+                while (resultCheck.next()){
+                    email=resultCheck.getString("email");
+                }
+
+                String randomString = "";
+                Random random = new Random();
+                for (int i = 0; i < length; i++) {
+                    int index = random.nextInt(CHARACTERS.length());
+                    randomString += CHARACTERS.charAt(index);
+                }
+
+                ConnectGmail connectGmail=new ConnectGmail();
+                connectGmail.SendEmail(email,"Mã xác thực","Mã xác thực của bạn là: "+randomString);
+
+                TextInputDialog requestOrder =  new TextInputDialog();
+                requestOrder.setTitle("Nhập thông tin xác thực");
+                requestOrder.getDialogPane().setContentText("Mã xác thực đã được gửi tới email của bạn!\n" + "Vui lòng nhập mã xác thực để tiếp tục");
+                Optional<String> order = requestOrder.showAndWait();
+                TextField num = requestOrder.getEditor();
+                if (order.isPresent()) {
+                    if (randomString.equals(num.getText())) {
+                        panel1.setVisible(false);
+                        panel2.setVisible(true);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Hộp thoại báo lỗi");
+                        alert.setHeaderText("Lỗi");
+                        alert.setContentText("Mã xác thực không đúng!\n" + "Vui lòng thử lại!");
+                        Optional<ButtonType> option = alert.showAndWait();
+
+                        if (option.isPresent() && option.get() == ButtonType.OK) {
+                            TextInputDialog requestOrder1 =  new TextInputDialog();
+                            requestOrder1.setTitle("Nhập thông tin xác thực");
+                            requestOrder1.getDialogPane().setContentText("Vui lòng nhập lại mã xác thực để tiếp tục");
+                            Optional<String> order1 = requestOrder1.showAndWait();
+                            TextField num1 = requestOrder1.getEditor();
+                            if (order1.isPresent()) {
+                                if (randomString.equals(num1.getText())) {
+                                    panel1.setVisible(false);
+                                    panel2.setVisible(true);
+                                } else {
+                                    Alert alert1 = new Alert(Alert.AlertType.ERROR);
+                                    alert1.setTitle("Hộp thoại báo lỗi");
+                                    alert1.setHeaderText("Lỗi");
+                                    alert1.setContentText("Mã xác thực không đúng!\n" + "Vui lòng thử lại sau!");
+                                    alert1.show();
+                                }
+                            }
+                        }
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Hộp thoại báo lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng nhập số căn cước công dân!");
+            alert.show();
         }
     }
 }
