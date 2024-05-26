@@ -2465,7 +2465,7 @@ public class MainInterface implements Initializable {
                                     } else if (option.get() == ButtonType.OK) {
                                         if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
                                             changeRequest();
-                                            order_label_fill.setText("");
+                                            requestorder_textfield.setText("");
                                             uni_combobox.setValue("");
                                             majors_combobox.setValue("");
                                             trainingunit_fill.setText("");
@@ -2487,7 +2487,7 @@ public class MainInterface implements Initializable {
                                 } else {
                                     if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
                                         requestAdd();
-                                        order_label_fill.setText("");
+                                        requestorder_textfield.setText("");
                                         uni_combobox.setValue("");
                                         majors_combobox.setValue("");
                                         trainingunit_fill.setText("");
