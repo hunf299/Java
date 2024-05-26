@@ -39,7 +39,7 @@
                         <Button id="btn_menu" fx:id="form_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="33.0" layoutY="83.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="131.0" style="-fx-background-color: transparent; -fx-font-size: 17px; -fx-font-weight: bold" text="Phiếu đăng ký" textFill="WHITE" />
                         <MenuButton id="btn_menu" fx:id="option_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="17.0" layoutY="138.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="142.0" style="-fx-background-color: transparent; -fx-font-size: 17px; -fx-font-weight: bold" text="Tra cứu" textAlignment="CENTER" textFill="WHITE">
                            <items>
-                              <MenuItem fx:id="testinfo_item" mnemonicParsing="false" text="Tra cứu giấy báo dự thi" />
+                              <MenuItem fx:id="testinfo_item" mnemonicParsing="false" text="Tra cứu thông tin dự thi" />
                               <MenuItem fx:id="score_item" mnemonicParsing="false" text="Tra cứu điểm thi" />
                               <MenuItem fx:id="statusinfo_item" mnemonicParsing="false" text="Tra cứu trúng tuyển" />
                            </items>
@@ -219,7 +219,7 @@
                   </AnchorPane>
                   <AnchorPane fx:id="testinfo_dashboard" layoutX="7.0" layoutY="219.0" prefHeight="125.0" prefWidth="657.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 8, 0, 0, 0); -fx-background-radius: 15; -fx-background-color: #fffefe;">
                      <children>
-                        <Label layoutX="14.0" layoutY="10.0" text="Giấy báo dự thi">
+                        <Label layoutX="14.0" layoutY="10.0" text="Thông tin dự thi">
                            <font>
                               <Font name="System Bold Italic" size="15.0" />
                            </font>
@@ -279,12 +279,12 @@
                                     <Font name="System Bold Italic" size="13.0" />
                                  </font>
                               </Button>
-                              <Button id="form_buttons" fx:id="viewform_button" mnemonicParsing="false" prefHeight="40.0" text="Xem phiếu" textFill="WHITE">
+                              <Button id="form_buttons" fx:id="printform_button" mnemonicParsing="false" prefHeight="40.0" text="In phiếu" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold Italic" size="13.0" />
                                  </font>
                               </Button>
-                              <Button id="form_buttons" fx:id="printform_button" mnemonicParsing="false" prefHeight="40.0" text="In phiếu" textFill="WHITE">
+                              <Button id="form_buttons" fx:id="viewform_button" mnemonicParsing="false" prefHeight="40.0" text="Xem phiếu" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold Italic" size="13.0" />
                                  </font>
@@ -432,7 +432,7 @@
             </StackPane>
             <AnchorPane fx:id="testinfo_panel" layoutX="225.0" layoutY="31.0" prefHeight="644.0" prefWidth="657.0" visible="false">
                <children>
-                  <Label fx:id="testinfo_label" layoutX="226.0" layoutY="8.0" text="Giấy báo dự thi THPTQG">
+                  <Label fx:id="testinfo_label" layoutX="226.0" layoutY="8.0" text="Thông tin dự thi THPTQG">
                      <font>
                         <Font name="System Bold Italic" size="20.0" />
                      </font>
@@ -443,7 +443,7 @@
                            <children>
                               <AnchorPane fx:id="testplace_panel" layoutX="37.0" layoutY="30.0" prefHeight="137.0" prefWidth="562.0" style="-fx-background-color: #ffffff; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;">
                                  <children>
-                                    <Label fx:id="testcheckin_label" layoutX="24.0" layoutY="14.0" text="Thông tin dự thi">
+                                    <Label fx:id="testcheckin_label" layoutX="24.0" layoutY="14.0" text="Thông tin chung">
                                        <font>
                                           <Font name="System Bold" size="20.0" />
                                        </font>

@@ -1059,6 +1059,13 @@ public class MainInterface implements Initializable {
                 alert.setContentText("Vui lòng nhập đúng năm sinh được cho phép!");
                 alert.showAndWait();
             }
+            else if (graduated_radiobutton.isSelected() && notgraduated_radiobutton.isSelected()) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hộp thoại báo lỗi");
+                alert.setHeaderText("Lỗi");
+                alert.setContentText("Vui lòng không chọn cả hai lựa chọn trong mục thí sinh tự do!");
+                alert.showAndWait();
+            }
             else {
                 LocalDate birthdate = birthdate_textfield.getValue();
                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -1158,9 +1165,12 @@ public class MainInterface implements Initializable {
         String thptqgValue = MainUtils.setLabel("SELECT thptqg FROM OOP_schema.candidate where personal_id = ?", "thptqg", LoginUtils.tempUserName);
         MainUtils.transferInttoString(MainUtils.setLabel("SELECT thptqg FROM candidate WHERE personal_id = ?", "thptqg", LoginUtils.tempUserName), thptqg_radiobutton_form);
         method_textfield_form.setText(MainUtils.setLabel("SELECT edumethod FROM OOP_schema.candidate where personal_id = ?", "edumethod", LoginUtils.tempUserName));
-        String receivedFreeCandidate = MainUtils.setLabel("SELECT freecandidate FROM OOP_schema.candidate where personal_id = ?", "freecandidate", LoginUtils.tempUserName);
-        if (!receivedFreeCandidate.equals("NULL")) {
-            free_textfield_form.setText(receivedFreeCandidate);
+        String free = MainUtils.setLabel("SELECT freecandidate FROM candidate WHERE personal_id = ?", "freecandidate", LoginUtils.tempUserName);
+        if (free.equals("NULL")) {
+            free_textfield_form.setText("Không có");
+        }
+        else {
+            free_textfield_form.setText(free);
         }
         StringBuilder subjects = new StringBuilder();
 
@@ -1325,6 +1335,13 @@ public class MainInterface implements Initializable {
                 alert.setTitle("Hộp thoại báo lỗi");
                 alert.setHeaderText("Lỗi");
                 alert.setContentText("Vui lòng nhập đúng năm sinh được cho phép!");
+                alert.showAndWait();
+            }
+            else if (graduated_radiobutton.isSelected() && notgraduated_radiobutton.isSelected()) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hộp thoại báo lỗi");
+                alert.setHeaderText("Lỗi");
+                alert.setContentText("Vui lòng không chọn cả hai lựa chọn trong mục thí sinh tự do!");
                 alert.showAndWait();
             }
             else {
@@ -1917,7 +1934,7 @@ public class MainInterface implements Initializable {
                                                 } catch (SQLException e) {
                                                     e.printStackTrace();
                                                 }
-                                                break;
+                                                //break;
                                             }
                                             else {
                                                 String insertQuery = "INSERT INTO accepteduni (personal_id, name, major, training_unit, training_program, status) VALUES (?, ?, ?, ?, ?, ?)";
@@ -1932,7 +1949,7 @@ public class MainInterface implements Initializable {
                                                 } catch (SQLException e) {
                                                     e.printStackTrace();
                                                 }
-                                                break;
+                                                //break;
                                             }
                                         }
                                         else {
@@ -1949,7 +1966,7 @@ public class MainInterface implements Initializable {
                                                 } catch (SQLException e) {
                                                     e.printStackTrace();
                                                 }
-                                                break;
+                                                //break;
                                             }
                                             else {
                                                 String insertQuery = "INSERT INTO accepteduni (personal_id, name, major, training_unit, training_program, status) VALUES (?, ?, ?, ?, ?, ?)";
@@ -1964,7 +1981,7 @@ public class MainInterface implements Initializable {
                                                 } catch (SQLException e) {
                                                     e.printStackTrace();
                                                 }
-                                                break;
+                                                //break;
                                             }
                                         }
                                     }
@@ -1981,7 +1998,7 @@ public class MainInterface implements Initializable {
                                         } catch (SQLException e) {
                                             e.printStackTrace();
                                         }
-                                        break;
+                                        //break;
                                     }
                                 }
                             }
@@ -2005,7 +2022,7 @@ public class MainInterface implements Initializable {
             StatusInfo statusInfo;
             prepare = connection.prepareStatement(receiver);
             result = prepare.executeQuery();
-            while (result.next()) {
+            if (result.next()) {
                 statusInfo = new StatusInfo(result.getNString("name"), result.getNString("major"), result.getNString("training_unit"), result.getNString("training_program"), result.getNString("status"));
                 status_list.add(statusInfo);
             }
@@ -2152,6 +2169,8 @@ public class MainInterface implements Initializable {
                         score_anchorpane.setVisible(false);
                         request_panel.setVisible(false);
                         statusinfo_panel.setVisible(false);
+                        printform_button.setVisible(true);
+                        viewform_button.setVisible(true);
                     }
                     else {
                         dashboard_panel.setVisible(false);
@@ -2164,6 +2183,8 @@ public class MainInterface implements Initializable {
                         score_anchorpane.setVisible(false);
                         request_panel.setVisible(false);
                         statusinfo_panel.setVisible(false);
+                        printform_button.setVisible(false);
+                        viewform_button.setVisible(false);
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -2309,7 +2330,9 @@ public class MainInterface implements Initializable {
                         changeCandidate();
                         delete_button.setVisible(true);
                         change_button.setVisible(true);
+                        showCandidateForm();
                         showform_panel.setVisible(true);
+                        printform_button.setVisible(true);
                         fillform_panel.setVisible(false);
                     }
                     else {
@@ -2318,6 +2341,7 @@ public class MainInterface implements Initializable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                fillFormDashboard();
             }
         });
         naturalscience.setOnAction(new EventHandler<ActionEvent>() {
@@ -2389,6 +2413,7 @@ public class MainInterface implements Initializable {
                         showCandidateForm();
                         delete_button.setVisible(true);
                         change_button.setVisible(true);
+                        printform_button.setVisible(true);
                     }
                     else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -2440,6 +2465,11 @@ public class MainInterface implements Initializable {
                                     } else if (option.get() == ButtonType.OK) {
                                         if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
                                             changeRequest();
+                                            order_label_fill.setText("");
+                                            uni_combobox.setValue("");
+                                            majors_combobox.setValue("");
+                                            trainingunit_fill.setText("");
+                                            trainingprogram_combobox_fill.setValue("");
                                         } else {
                                             alert1 = new Alert(Alert.AlertType.ERROR);
                                             alert1.setTitle("Hộp thoại báo lỗi");
@@ -2457,6 +2487,11 @@ public class MainInterface implements Initializable {
                                 } else {
                                     if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
                                         requestAdd();
+                                        order_label_fill.setText("");
+                                        uni_combobox.setValue("");
+                                        majors_combobox.setValue("");
+                                        trainingunit_fill.setText("");
+                                        trainingprogram_combobox_fill.setValue("");
                                     } else {
                                         alert1 = new Alert(Alert.AlertType.ERROR);
                                         alert1.setTitle("Hộp thoại báo lỗi");
