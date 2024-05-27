@@ -1495,123 +1495,142 @@ public class MainInterface implements Initializable {
             alert1.showAndWait();
 
         }
-
-
     }
-
     public void changeRequest() {
         Connection connectDB = Database.connectDB();
-        if (tempOrder.equals(requestorder_textfield.getText())) {
-            String changeData = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + requestorder_textfield.getText();
-            try {
-                Alert alert;
-                prepare = connectDB.prepareStatement(changeData);
-                prepare.setString(1, uni_combobox.getValue());
-                prepare.setString(2, majors_combobox.getValue());
-                prepare.setString(3, trainingunit_fill.getText());
-                prepare.setString(4, trainingprogram_combobox_fill.getValue());
-                prepare.executeUpdate();
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Hộp thoại thông báo");
-                alert.setHeaderText("Thông báo");
-                alert.setContentText("Sửa thành công!");
-                alert.showAndWait();
+        String checkDuplicate = "SELECT * FROM request WHERE uni_name = ? AND major = ? AND training_unit = ? AND training_program = ? AND personal_id = ?";
+        try (PreparedStatement checkStatement = connectDB.prepareStatement(checkDuplicate)) {
 
-                requestorder_textfield.setText("");
-                uni_combobox.setValue(null);
-                majors_combobox.setValue(null);
-                trainingprogram_combobox_fill.setValue(null);
-                trainingunit_fill.setText("");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            String tempUni = null;
-            String tempMajor = null;
-            String tempUnit = null;
-            String tempProgram = null;
-            String uni_name = "SELECT uni_name FROM request WHERE personal_id = ? AND request_order = ?";
-            connectDB = Database.connectDB();
-            try (PreparedStatement statement2 = connectDB.prepareStatement(uni_name)) {
-                statement2.setString(1, LoginUtils.tempUserName);
-                statement2.setString(2, requestorder_textfield.getText());
-                ResultSet resultSet1 = statement2.executeQuery();
-                if (resultSet1.next()) {
-                    tempUni = resultSet1.getString("uni_name");
-                }
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-            String major = "SELECT major FROM request WHERE personal_id = ? AND request_order = ?";
-            connectDB = Database.connectDB();
-            try (PreparedStatement statement2 = connectDB.prepareStatement(major)) {
-                statement2.setString(1, LoginUtils.tempUserName);
-                statement2.setString(2, requestorder_textfield.getText());
-                ResultSet resultSet1 = statement2.executeQuery();
-                if (resultSet1.next()) {
-                    tempMajor = resultSet1.getString("major");
-                }
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-            String unit = "SELECT training_unit FROM request WHERE personal_id = ? AND request_order = ?";
-            connectDB = Database.connectDB();
-            try (PreparedStatement statement2 = connectDB.prepareStatement(unit)) {
-                statement2.setString(1, LoginUtils.tempUserName);
-                statement2.setString(2, requestorder_textfield.getText());
-                ResultSet resultSet1 = statement2.executeQuery();
-                if (resultSet1.next()) {
-                    tempUnit = resultSet1.getString("training_unit");
-                }
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-            String program = "SELECT training_program FROM request WHERE personal_id = ? AND request_order = ?";
-            connectDB = Database.connectDB();
-            try (PreparedStatement statement2 = connectDB.prepareStatement(program)) {
-                statement2.setString(1, LoginUtils.tempUserName);
-                statement2.setString(2, requestorder_textfield.getText());
-                ResultSet resultSet1 = statement2.executeQuery();
-                if (resultSet1.next()) {
-                    tempProgram = resultSet1.getString("training_program");
-                }
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-            String changeData = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + requestorder_textfield.getText();
-            try {
-                prepare = connectDB.prepareStatement(changeData);
-                prepare.setString(1, uni_combobox.getValue());
-                prepare.setString(2, majors_combobox.getValue());
-                prepare.setString(3, trainingunit_fill.getText());
-                prepare.setString(4, trainingprogram_combobox_fill.getValue());
-                prepare.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            String changeData1 = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + tempOrder;
-            Connection connection = Database.connectDB();
-            try {
-                Alert alert;
-                prepare = connection.prepareStatement(changeData1);
-                prepare.setString(1, tempUni);
-                prepare.setString(2, tempMajor);
-                prepare.setString(3, tempUnit);
-                prepare.setString(4, tempProgram);
-                prepare.executeUpdate();
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Hộp thoại thông báo");
-                alert.setHeaderText("Thông báo");
-                alert.setContentText("Sửa thành công!");
+            checkStatement.setString(1, uni_combobox.getValue());
+            checkStatement.setString(2, majors_combobox.getValue());
+            checkStatement.setString(3, trainingunit_fill.getText());
+            checkStatement.setString(4, trainingprogram_combobox_fill.getValue());
+            checkStatement.setString(5, LoginUtils.tempUserName);
+
+            ResultSet checkResult = checkStatement.executeQuery();
+
+            if (checkResult.next()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Hộp thoại báo lỗi");
+                alert.setHeaderText("Lỗi");
+                alert.setContentText("Đã có nguyện vọng tương tự được thêm vào!");
                 alert.showAndWait();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } else {
+                if (tempOrder.equals(requestorder_textfield.getText())) {
+                    String changeData = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + requestorder_textfield.getText();
+                    try {
+                        Alert alert;
+                        prepare = connectDB.prepareStatement(changeData);
+                        prepare.setString(1, uni_combobox.getValue());
+                        prepare.setString(2, majors_combobox.getValue());
+                        prepare.setString(3, trainingunit_fill.getText());
+                        prepare.setString(4, trainingprogram_combobox_fill.getValue());
+                        prepare.executeUpdate();
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Hộp thoại thông báo");
+                        alert.setHeaderText("Thông báo");
+                        alert.setContentText("Sửa thành công!");
+                        alert.showAndWait();
+
+                        requestorder_textfield.setText("");
+                        uni_combobox.setValue(null);
+                        majors_combobox.setValue(null);
+                        trainingprogram_combobox_fill.setValue(null);
+                        trainingunit_fill.setText("");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    String tempUni = null;
+                    String tempMajor = null;
+                    String tempUnit = null;
+                    String tempProgram = null;
+                    String uni_name = "SELECT uni_name FROM request WHERE personal_id = ? AND request_order = ?";
+                    connectDB = Database.connectDB();
+                    try (PreparedStatement statement2 = connectDB.prepareStatement(uni_name)) {
+                        statement2.setString(1, LoginUtils.tempUserName);
+                        statement2.setString(2, requestorder_textfield.getText());
+                        ResultSet resultSet1 = statement2.executeQuery();
+                        if (resultSet1.next()) {
+                            tempUni = resultSet1.getString("uni_name");
+                        }
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    String major = "SELECT major FROM request WHERE personal_id = ? AND request_order = ?";
+                    connectDB = Database.connectDB();
+                    try (PreparedStatement statement2 = connectDB.prepareStatement(major)) {
+                        statement2.setString(1, LoginUtils.tempUserName);
+                        statement2.setString(2, requestorder_textfield.getText());
+                        ResultSet resultSet1 = statement2.executeQuery();
+                        if (resultSet1.next()) {
+                            tempMajor = resultSet1.getString("major");
+                        }
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    String unit = "SELECT training_unit FROM request WHERE personal_id = ? AND request_order = ?";
+                    connectDB = Database.connectDB();
+                    try (PreparedStatement statement2 = connectDB.prepareStatement(unit)) {
+                        statement2.setString(1, LoginUtils.tempUserName);
+                        statement2.setString(2, requestorder_textfield.getText());
+                        ResultSet resultSet1 = statement2.executeQuery();
+                        if (resultSet1.next()) {
+                            tempUnit = resultSet1.getString("training_unit");
+                        }
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    String program = "SELECT training_program FROM request WHERE personal_id = ? AND request_order = ?";
+                    connectDB = Database.connectDB();
+                    try (PreparedStatement statement2 = connectDB.prepareStatement(program)) {
+                        statement2.setString(1, LoginUtils.tempUserName);
+                        statement2.setString(2, requestorder_textfield.getText());
+                        ResultSet resultSet1 = statement2.executeQuery();
+                        if (resultSet1.next()) {
+                            tempProgram = resultSet1.getString("training_program");
+                        }
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    String changeData = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + requestorder_textfield.getText();
+                    try {
+                        prepare = connectDB.prepareStatement(changeData);
+                        prepare.setString(1, uni_combobox.getValue());
+                        prepare.setString(2, majors_combobox.getValue());
+                        prepare.setString(3, trainingunit_fill.getText());
+                        prepare.setString(4, trainingprogram_combobox_fill.getValue());
+                        prepare.executeUpdate();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    String changeData1 = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + tempOrder;
+                    Connection connection = Database.connectDB();
+                    try {
+                        Alert alert;
+                        prepare = connection.prepareStatement(changeData1);
+                        prepare.setString(1, tempUni);
+                        prepare.setString(2, tempMajor);
+                        prepare.setString(3, tempUnit);
+                        prepare.setString(4, tempProgram);
+                        prepare.executeUpdate();
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Hộp thoại thông báo");
+                        alert.setHeaderText("Thông báo");
+                        alert.setContentText("Sửa thành công!");
+                        alert.showAndWait();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
     public void deleteRequest() {
