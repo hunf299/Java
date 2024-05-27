@@ -2485,10 +2485,10 @@ public class MainInterface implements Initializable {
                                         if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
                                             changeRequest();
                                             requestorder_textfield.setText("");
-                                            uni_combobox.setValue("");
-                                            majors_combobox.setValue("");
+                                            uni_combobox.setValue(null);
+                                            majors_combobox.setValue(null);
                                             trainingunit_fill.setText("");
-                                            trainingprogram_combobox_fill.setValue("");
+                                            trainingprogram_combobox_fill.setValue(null);
                                         } else {
                                             alert1 = new Alert(Alert.AlertType.ERROR);
                                             alert1.setTitle("Hộp thoại báo lỗi");
@@ -2507,10 +2507,10 @@ public class MainInterface implements Initializable {
                                     if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
                                         requestAdd();
                                         requestorder_textfield.setText("");
-                                        uni_combobox.setValue("");
-                                        majors_combobox.setValue("");
+                                        uni_combobox.setValue(null);
+                                        majors_combobox.setValue(null);
                                         trainingunit_fill.setText("");
-                                        trainingprogram_combobox_fill.setValue("");
+                                        trainingprogram_combobox_fill.setValue(null);
                                     } else {
                                         alert1 = new Alert(Alert.AlertType.ERROR);
                                         alert1.setTitle("Hộp thoại báo lỗi");

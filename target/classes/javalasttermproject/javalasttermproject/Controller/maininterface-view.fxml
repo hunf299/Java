@@ -36,7 +36,7 @@
                      </image></ImageView>
                   <AnchorPane layoutX="7.0" layoutY="61.0" prefHeight="581.0" prefWidth="164.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="1.0" AnchorPane.topAnchor="61.0">
                      <children>
-                        <Button id="btn_menu" fx:id="form_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="33.0" layoutY="83.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="131.0" style="-fx-background-color: transparent; -fx-font-size: 17px; -fx-font-weight: bold" text="Phiếu đăng ký" textFill="WHITE" />
+                        <Button id="btn_menu" fx:id="form_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="33.0" layoutY="83.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="142.0" style="-fx-background-color: transparent; -fx-font-size: 17px; -fx-font-weight: bold" text="Phiếu đăng ký" textFill="WHITE" />
                         <MenuButton id="btn_menu" fx:id="option_button" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="17.0" layoutY="138.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="142.0" style="-fx-background-color: transparent; -fx-font-size: 17px; -fx-font-weight: bold" text="Tra cứu" textAlignment="CENTER" textFill="WHITE">
                            <items>
                               <MenuItem fx:id="testinfo_item" mnemonicParsing="false" text="Tra cứu thông tin dự thi" />
@@ -267,9 +267,9 @@
                <children>
                   <AnchorPane prefHeight="644.0" prefWidth="656.0">
                      <children>
-                        <ButtonBar fx:id="form_buttonbar" layoutX="289.0" layoutY="3.0" prefHeight="53.0" prefWidth="362.0">
+                        <ButtonBar fx:id="form_buttonbar" layoutX="285.0" layoutY="3.0" prefHeight="54.0" prefWidth="385.0">
                            <buttons>
-                              <Button id="form_buttons" fx:id="change_button" mnemonicParsing="false" prefHeight="40.0" text="Sửa phiếu" textFill="WHITE">
+                              <Button id="form_buttons" fx:id="change_button" mnemonicParsing="false" prefHeight="40.0" prefWidth="114.0" text="Sửa phiếu" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold Italic" size="13.0" />
                                  </font>
@@ -370,7 +370,7 @@
                               </ScrollPane>
                            </children>
                         </AnchorPane>
-                        <Label fx:id="form_label" layoutX="27.0" layoutY="17.0" text="Phiếu đăng ký dự thi THPTQG">
+                        <Label fx:id="form_label" layoutX="7.0" layoutY="17.0" text="Phiếu đăng ký dự thi THPTQG">
                            <font>
                               <Font name="System Bold Italic" size="20.0" />
                            </font>
@@ -845,7 +845,7 @@
                   </ButtonBar>
                   <AnchorPane fx:id="firstrequest_panel1" layoutX="3.0" layoutY="108.0" prefHeight="157.0" prefWidth="650.0" style="-fx-background-color: #ffffff; -fx-background-radius: 20;">
                      <children>
-                        <Label fx:id="order_label_fill" layoutX="48.0" layoutY="25.0" text="Thứ tự nguyện vọng">
+                        <Label fx:id="order_label_fill" layoutX="29.0" layoutY="25.0" text="Thứ tự nguyện vọng">
                            <font>
                               <Font name="System Bold" size="17.0" />
                            </font>
@@ -873,10 +873,10 @@
                   <TableView fx:id="request_tableview" layoutX="3.0" layoutY="281.0" prefHeight="362.0" prefWidth="650.0">
                     <columns>
                       <TableColumn fx:id="order_column" editable="false" prefWidth="43.0" text="Thứ tự" />
-                      <TableColumn fx:id="uni_column" editable="false" minWidth="9.0" prefWidth="230.0" text="Trường" />
-                        <TableColumn fx:id="major_column" editable="false" minWidth="9.0" prefWidth="188.0" text="Ngành" />
-                        <TableColumn fx:id="unit_column" editable="false" minWidth="9.0" prefWidth="65.0" text="Hệ đào tạo" />
-                        <TableColumn fx:id="program_column" editable="false" minWidth="9.0" prefWidth="119.0" text="Chương trình đào tạo" />
+                      <TableColumn fx:id="uni_column" editable="false" minWidth="9.0" prefWidth="221.5999755859375" text="Trường" />
+                        <TableColumn fx:id="major_column" editable="false" minWidth="9.0" prefWidth="184.00003051757812" text="Ngành" />
+                        <TableColumn fx:id="unit_column" editable="false" minWidth="9.0" prefWidth="67.99993896484375" text="Hệ đào tạo" />
+                        <TableColumn fx:id="program_column" editable="false" minWidth="9.0" prefWidth="131.2000732421875" text="Chương trình đào tạo" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
