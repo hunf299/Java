@@ -885,6 +885,7 @@ public class MainInterface implements Initializable {
     private String tempName;
     private String tempDate;
     private String tempOrder;
+
     static String OS = null;
     public static String getOsName() {
         if(OS == null) { OS = System.getProperty("os.name"); }
@@ -1145,6 +1146,13 @@ public class MainInterface implements Initializable {
         if (daysBetween2 > 0) {
             norequesttoview.setVisible(true);
             prohibitedrequestpanel.setVisible(true);
+        }
+        String dateStatus = "2024-05-23 23:59:59";
+        LocalDateTime tempDateStatus = LocalDateTime.parse(dateStatus, tempFormatter);
+        Duration duration3 = Duration.between(currentDate, tempDateStatus);
+        long daysBetween3 = duration3.toDays();
+        if (daysBetween3 > 0) {
+            prohibitedstatusinfopanel.setVisible(true);
         }
     }
     public void showCandidateForm() {
@@ -1498,139 +1506,117 @@ public class MainInterface implements Initializable {
     }
     public void changeRequest() {
         Connection connectDB = Database.connectDB();
-        String checkDuplicate = "SELECT * FROM request WHERE uni_name = ? AND major = ? AND training_unit = ? AND training_program = ? AND personal_id = ?";
-        try (PreparedStatement checkStatement = connectDB.prepareStatement(checkDuplicate)) {
-
-            checkStatement.setString(1, uni_combobox.getValue());
-            checkStatement.setString(2, majors_combobox.getValue());
-            checkStatement.setString(3, trainingunit_fill.getText());
-            checkStatement.setString(4, trainingprogram_combobox_fill.getValue());
-            checkStatement.setString(5, LoginUtils.tempUserName);
-
-            ResultSet checkResult = checkStatement.executeQuery();
-
-            if (checkResult.next()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Hộp thoại báo lỗi");
-                alert.setHeaderText("Lỗi");
-                alert.setContentText("Đã có nguyện vọng tương tự được thêm vào!");
+        if (tempOrder.equals(requestorder_textfield.getText())) {
+            String changeData = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + requestorder_textfield.getText();
+            try {
+                Alert alert;
+                prepare = connectDB.prepareStatement(changeData);
+                prepare.setString(1, uni_combobox.getValue());
+                prepare.setString(2, majors_combobox.getValue());
+                prepare.setString(3, trainingunit_fill.getText());
+                prepare.setString(4, trainingprogram_combobox_fill.getValue());
+                prepare.executeUpdate();
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Hộp thoại thông báo");
+                alert.setHeaderText("Thông báo");
+                alert.setContentText("Sửa thành công!");
                 alert.showAndWait();
-            } else {
-                if (tempOrder.equals(requestorder_textfield.getText())) {
-                    String changeData = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + requestorder_textfield.getText();
-                    try {
-                        Alert alert;
-                        prepare = connectDB.prepareStatement(changeData);
-                        prepare.setString(1, uni_combobox.getValue());
-                        prepare.setString(2, majors_combobox.getValue());
-                        prepare.setString(3, trainingunit_fill.getText());
-                        prepare.setString(4, trainingprogram_combobox_fill.getValue());
-                        prepare.executeUpdate();
-                        alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Hộp thoại thông báo");
-                        alert.setHeaderText("Thông báo");
-                        alert.setContentText("Sửa thành công!");
-                        alert.showAndWait();
 
-                        requestorder_textfield.setText("");
-                        uni_combobox.setValue(null);
-                        majors_combobox.setValue(null);
-                        trainingprogram_combobox_fill.setValue(null);
-                        trainingunit_fill.setText("");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    String tempUni = null;
-                    String tempMajor = null;
-                    String tempUnit = null;
-                    String tempProgram = null;
-                    String uni_name = "SELECT uni_name FROM request WHERE personal_id = ? AND request_order = ?";
-                    connectDB = Database.connectDB();
-                    try (PreparedStatement statement2 = connectDB.prepareStatement(uni_name)) {
-                        statement2.setString(1, LoginUtils.tempUserName);
-                        statement2.setString(2, requestorder_textfield.getText());
-                        ResultSet resultSet1 = statement2.executeQuery();
-                        if (resultSet1.next()) {
-                            tempUni = resultSet1.getString("uni_name");
-                        }
-                    }
-                    catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    String major = "SELECT major FROM request WHERE personal_id = ? AND request_order = ?";
-                    connectDB = Database.connectDB();
-                    try (PreparedStatement statement2 = connectDB.prepareStatement(major)) {
-                        statement2.setString(1, LoginUtils.tempUserName);
-                        statement2.setString(2, requestorder_textfield.getText());
-                        ResultSet resultSet1 = statement2.executeQuery();
-                        if (resultSet1.next()) {
-                            tempMajor = resultSet1.getString("major");
-                        }
-                    }
-                    catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    String unit = "SELECT training_unit FROM request WHERE personal_id = ? AND request_order = ?";
-                    connectDB = Database.connectDB();
-                    try (PreparedStatement statement2 = connectDB.prepareStatement(unit)) {
-                        statement2.setString(1, LoginUtils.tempUserName);
-                        statement2.setString(2, requestorder_textfield.getText());
-                        ResultSet resultSet1 = statement2.executeQuery();
-                        if (resultSet1.next()) {
-                            tempUnit = resultSet1.getString("training_unit");
-                        }
-                    }
-                    catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    String program = "SELECT training_program FROM request WHERE personal_id = ? AND request_order = ?";
-                    connectDB = Database.connectDB();
-                    try (PreparedStatement statement2 = connectDB.prepareStatement(program)) {
-                        statement2.setString(1, LoginUtils.tempUserName);
-                        statement2.setString(2, requestorder_textfield.getText());
-                        ResultSet resultSet1 = statement2.executeQuery();
-                        if (resultSet1.next()) {
-                            tempProgram = resultSet1.getString("training_program");
-                        }
-                    }
-                    catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    String changeData = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + requestorder_textfield.getText();
-                    try {
-                        prepare = connectDB.prepareStatement(changeData);
-                        prepare.setString(1, uni_combobox.getValue());
-                        prepare.setString(2, majors_combobox.getValue());
-                        prepare.setString(3, trainingunit_fill.getText());
-                        prepare.setString(4, trainingprogram_combobox_fill.getValue());
-                        prepare.executeUpdate();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    String changeData1 = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + tempOrder;
-                    Connection connection = Database.connectDB();
-                    try {
-                        Alert alert;
-                        prepare = connection.prepareStatement(changeData1);
-                        prepare.setString(1, tempUni);
-                        prepare.setString(2, tempMajor);
-                        prepare.setString(3, tempUnit);
-                        prepare.setString(4, tempProgram);
-                        prepare.executeUpdate();
-                        alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Hộp thoại thông báo");
-                        alert.setHeaderText("Thông báo");
-                        alert.setContentText("Sửa thành công!");
-                        alert.showAndWait();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                requestorder_textfield.setText("");
+                uni_combobox.setValue(null);
+                majors_combobox.setValue(null);
+                trainingprogram_combobox_fill.setValue(null);
+                trainingunit_fill.setText("");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            String tempUni = null;
+            String tempMajor = null;
+            String tempUnit = null;
+            String tempProgram = null;
+            String uni_name = "SELECT uni_name FROM request WHERE personal_id = ? AND request_order = ?";
+            connectDB = Database.connectDB();
+            try (PreparedStatement statement2 = connectDB.prepareStatement(uni_name)) {
+                statement2.setString(1, LoginUtils.tempUserName);
+                statement2.setString(2, requestorder_textfield.getText());
+                ResultSet resultSet1 = statement2.executeQuery();
+                if (resultSet1.next()) {
+                    tempUni = resultSet1.getString("uni_name");
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+            String major = "SELECT major FROM request WHERE personal_id = ? AND request_order = ?";
+            connectDB = Database.connectDB();
+            try (PreparedStatement statement2 = connectDB.prepareStatement(major)) {
+                statement2.setString(1, LoginUtils.tempUserName);
+                statement2.setString(2, requestorder_textfield.getText());
+                ResultSet resultSet1 = statement2.executeQuery();
+                if (resultSet1.next()) {
+                    tempMajor = resultSet1.getString("major");
+                }
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+            String unit = "SELECT training_unit FROM request WHERE personal_id = ? AND request_order = ?";
+            connectDB = Database.connectDB();
+            try (PreparedStatement statement2 = connectDB.prepareStatement(unit)) {
+                statement2.setString(1, LoginUtils.tempUserName);
+                statement2.setString(2, requestorder_textfield.getText());
+                ResultSet resultSet1 = statement2.executeQuery();
+                if (resultSet1.next()) {
+                    tempUnit = resultSet1.getString("training_unit");
+                }
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+            String program = "SELECT training_program FROM request WHERE personal_id = ? AND request_order = ?";
+            connectDB = Database.connectDB();
+            try (PreparedStatement statement2 = connectDB.prepareStatement(program)) {
+                statement2.setString(1, LoginUtils.tempUserName);
+                statement2.setString(2, requestorder_textfield.getText());
+                ResultSet resultSet1 = statement2.executeQuery();
+                if (resultSet1.next()) {
+                    tempProgram = resultSet1.getString("training_program");
+                }
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+            String changeData = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + requestorder_textfield.getText();
+            try {
+                prepare = connectDB.prepareStatement(changeData);
+                prepare.setString(1, uni_combobox.getValue());
+                prepare.setString(2, majors_combobox.getValue());
+                prepare.setString(3, trainingunit_fill.getText());
+                prepare.setString(4, trainingprogram_combobox_fill.getValue());
+                prepare.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            String changeData1 = "UPDATE request SET uni_name = ?, major = ?, training_unit = ?, training_program = ? WHERE personal_id = '" + LoginUtils.tempUserName + "' AND request_order = " + tempOrder;
+            Connection connection = Database.connectDB();
+            try {
+                Alert alert;
+                prepare = connection.prepareStatement(changeData1);
+                prepare.setString(1, tempUni);
+                prepare.setString(2, tempMajor);
+                prepare.setString(3, tempUnit);
+                prepare.setString(4, tempProgram);
+                prepare.executeUpdate();
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Hộp thoại thông báo");
+                alert.setHeaderText("Thông báo");
+                alert.setContentText("Sửa thành công!");
+                alert.showAndWait();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     public void deleteRequest() {
@@ -1909,22 +1895,22 @@ public class MainInterface implements Initializable {
                 ResultSet resultSet1 = preparedStatement1.executeQuery();
                 if (resultSet1.next()) {
                     boolean isAccepted = false;
-                    if (resultSet1.getDouble("a00") != 0 && compareWithLabel(a001, resultSet1.getString("a00"))) {
+                    if (resultSet1.getDouble("a00") != 40 && compareWithLabel(a001, resultSet1.getString("a00"))) {
                         isAccepted = true;
                     }
-                    if (resultSet1.getDouble("a01") != 0 && compareWithLabel(a011, resultSet1.getString("a01"))) {
+                    if (resultSet1.getDouble("a01") != 40 && compareWithLabel(a011, resultSet1.getString("a01"))) {
                         isAccepted = true;
                     }
-                    if (resultSet1.getDouble("b00") != 0 && compareWithLabel(b001, resultSet1.getString("b00"))) {
+                    if (resultSet1.getDouble("b00") != 40 && compareWithLabel(b001, resultSet1.getString("b00"))) {
                         isAccepted = true;
                     }
-                    if (resultSet1.getDouble("c00") != 0 && compareWithLabel(c001, resultSet1.getString("c00"))) {
+                    if (resultSet1.getDouble("c00") != 40 && compareWithLabel(c001, resultSet1.getString("c00"))) {
                         isAccepted = true;
                     }
-                    if (resultSet1.getDouble("d00") != 0 && compareWithLabel(d001, resultSet1.getString("d00"))) {
+                    if (resultSet1.getDouble("d00") != 40 && compareWithLabel(d001, resultSet1.getString("d00"))) {
                         isAccepted = true;
                     }
-                    if (resultSet1.getDouble("d07") != 0 && compareWithLabel(d071, resultSet1.getString("d07"))) {
+                    if (resultSet1.getDouble("d07") != 40 && compareWithLabel(d071, resultSet1.getString("d07"))) {
                         isAccepted = true;
                     }
                     if (isAccepted) { // Check if accepted before inserting
@@ -2346,16 +2332,68 @@ public class MainInterface implements Initializable {
                     statement = connection.createStatement();
                     result = statement.executeQuery(checkAvailable);
                     if (result.next()) {
-                        changeCandidate();
-                        delete_button.setVisible(true);
-                        change_button.setVisible(true);
-                        showCandidateForm();
-                        showform_panel.setVisible(true);
-                        printform_button.setVisible(true);
-                        fillform_panel.setVisible(false);
+                        if ((!graduated_radiobutton.isSelected() && !notgraduated_radiobutton.isSelected() || notgraduated_radiobutton.isSelected())) {
+                            if (!math.isSelected() || !literature.isSelected() || !foreignlanguage.isSelected()) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Hộp thoại báo lỗi");
+                                alert.setHeaderText("Lỗi");
+                                alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc !");
+                                alert.showAndWait();
+                            }
+                            else {
+                                if (!naturalscience.isSelected() && !socialscience.isSelected()) {
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setTitle("Hộp thoại báo lỗi");
+                                    alert.setHeaderText("Lỗi");
+                                    alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc !");
+                                    alert.showAndWait();
+                                }
+                                else {
+                                    changeCandidate();
+                                    delete_button.setVisible(true);
+                                    change_button.setVisible(true);
+                                    showCandidateForm();
+                                    showform_panel.setVisible(true);
+                                    printform_button.setVisible(true);
+                                    fillform_panel.setVisible(false);
+                                }
+                            }
+                        }
+                        if (graduated_radiobutton.isSelected() && !notgraduated_radiobutton.isSelected()) {
+                            changeCandidate();
+                            delete_button.setVisible(true);
+                            change_button.setVisible(true);
+                            showCandidateForm();
+                            showform_panel.setVisible(true);
+                            printform_button.setVisible(true);
+                            fillform_panel.setVisible(false);
+                        }
                     }
                     else {
-                        candidateAdd();
+                        if ((!graduated_radiobutton.isSelected() && !notgraduated_radiobutton.isSelected() || notgraduated_radiobutton.isSelected())) {
+                            if (!math.isSelected() || !literature.isSelected() || !foreignlanguage.isSelected()) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Hộp thoại báo lỗi");
+                                alert.setHeaderText("Lỗi");
+                                alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc !");
+                                alert.showAndWait();
+                            }
+                            else {
+                                if (!naturalscience.isSelected() && !socialscience.isSelected()) {
+                                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                                    alert.setTitle("Hộp thoại báo lỗi");
+                                    alert.setHeaderText("Lỗi");
+                                    alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc !");
+                                    alert.showAndWait();
+                                }
+                                else {
+                                    candidateAdd();
+                                }
+                            }
+                        }
+                        if (graduated_radiobutton.isSelected() && !notgraduated_radiobutton.isSelected()) {
+                            candidateAdd();
+                        }
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -2485,10 +2523,10 @@ public class MainInterface implements Initializable {
                                         if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
                                             changeRequest();
                                             requestorder_textfield.setText("");
-                                            uni_combobox.setValue("");
-                                            majors_combobox.setValue("");
+                                            uni_combobox.setValue(null);
+                                            majors_combobox.setValue(null);
                                             trainingunit_fill.setText("");
-                                            trainingprogram_combobox_fill.setValue("");
+                                            trainingprogram_combobox_fill.setValue(null);
                                         } else {
                                             alert1 = new Alert(Alert.AlertType.ERROR);
                                             alert1.setTitle("Hộp thoại báo lỗi");
@@ -2507,10 +2545,10 @@ public class MainInterface implements Initializable {
                                     if (MainUtils.isRequestMatchUniInfo(uni_combobox.getValue(), majors_combobox.getValue(), trainingunit_fill.getText(), trainingprogram_combobox_fill.getValue())) {
                                         requestAdd();
                                         requestorder_textfield.setText("");
-                                        uni_combobox.setValue("");
-                                        majors_combobox.setValue("");
+                                        uni_combobox.setValue(null);
+                                        majors_combobox.setValue(null);
                                         trainingunit_fill.setText("");
-                                        trainingprogram_combobox_fill.setValue("");
+                                        trainingprogram_combobox_fill.setValue(null);
                                     } else {
                                         alert1 = new Alert(Alert.AlertType.ERROR);
                                         alert1.setTitle("Hộp thoại báo lỗi");
@@ -2718,7 +2756,7 @@ public class MainInterface implements Initializable {
                             if(thptqg_radiobutton_form.getText().equals("Có")){
                                 thpt="Có";
                             }
-                            document.add(new Paragraph("Sử dụng kết quả thi THPT để xét tuyển ĐH, CĐ"+thpt));
+                            document.add(new Paragraph("Sử dụng kết quả thi THPT để xét tuyển ĐH, CĐ: "+thpt));
                             document.add(new Paragraph("Hình thức giáo dục phổ thông: "+method_textfield_form.getText()));
                             document.add(new Paragraph("Thí sinh tự do: "+free_textfield_form.getText()));
 
@@ -2729,7 +2767,9 @@ public class MainInterface implements Initializable {
                             document.add(new Paragraph(""));
                             document.add(new Paragraph(""));
                             document.add(new Paragraph(""));
-                            document.add(new Paragraph(nameLabel).setTextAlignment(TextAlignment.RIGHT).setMarginRight(50));
+                            document.add(new Paragraph(""));
+                            document.add(new Paragraph(""));
+                            document.add(new Paragraph(nameLabel).setTextAlignment(TextAlignment.RIGHT).setMarginRight(40));
 
                             // Đóng tài liệu
                             document.close();
