@@ -2337,7 +2337,7 @@ public class MainInterface implements Initializable {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Hộp thoại báo lỗi");
                                 alert.setHeaderText("Lỗi");
-                                alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc !");
+                                alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc!");
                                 alert.showAndWait();
                             }
                             else {
@@ -2345,7 +2345,7 @@ public class MainInterface implements Initializable {
                                     Alert alert = new Alert(Alert.AlertType.ERROR);
                                     alert.setTitle("Hộp thoại báo lỗi");
                                     alert.setHeaderText("Lỗi");
-                                    alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc !");
+                                    alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc!");
                                     alert.showAndWait();
                                 }
                                 else {
@@ -2375,7 +2375,7 @@ public class MainInterface implements Initializable {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Hộp thoại báo lỗi");
                                 alert.setHeaderText("Lỗi");
-                                alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc !");
+                                alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc!");
                                 alert.showAndWait();
                             }
                             else {
@@ -2383,7 +2383,7 @@ public class MainInterface implements Initializable {
                                     Alert alert = new Alert(Alert.AlertType.ERROR);
                                     alert.setTitle("Hộp thoại báo lỗi");
                                     alert.setHeaderText("Lỗi");
-                                    alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc !");
+                                    alert.setContentText("Thí sinh chưa tốt nghiệp vui lòng chọn đủ các môn thi bắt buộc!");
                                     alert.showAndWait();
                                 }
                                 else {
